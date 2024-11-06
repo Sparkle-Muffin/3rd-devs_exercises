@@ -38,14 +38,14 @@ def download_and_save_json(url, json_file_path, api_key):
 
 def main():
     # URL of the data file
-    download_url = "https://poligon.aidevs.pl/dane.txt"
+    download_url = os.getenv("TASK_0_DOWNLOAD_URL")
     # submission URL
-    submission_url = "https://poligon.aidevs.pl/verify"
+    submission_url = os.getenv("TASK_0_SUBMISSION_URL")
     # Path to the JSON file where we'll save the strings
     json_file_path = "tasks/task_0/result.json"
 
     # Load API key from environment variables
-    api_key = os.getenv("API_KEY")
+    api_key = os.getenv("AI_DEVS_3_API_KEY")
     if not api_key:
         print("API key is missing. Please set it in the .env file.")
         return
