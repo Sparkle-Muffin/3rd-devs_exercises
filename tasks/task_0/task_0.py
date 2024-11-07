@@ -3,8 +3,9 @@ import json
 from dotenv import load_dotenv
 import sys
 import os
+
 # Add the parent directory to the system path (otherwise the send_json.py can't be imported)
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from send_json import send_json
 
 
@@ -25,9 +26,7 @@ def download_and_save_json(url, json_file_path, api_key):
         # Step 3: Save as JSON file
         with open(json_file_path, "w") as json_file:
             # a Python object (dict):
-            json_content = {"task": "POLIGON", 
-                            "apikey": api_key, 
-                            "answer": strings}
+            json_content = {"task": "POLIGON", "apikey": api_key, "answer": strings}
             # convert into JSON:
             json.dump(json_content, json_file)
         print(f"Data saved to {json_file_path}")
@@ -49,7 +48,7 @@ def main():
     if not api_key:
         print("API key is missing. Please set it in the .env file.")
         return
-    
+
     # Download and save the JSON file
     download_and_save_json(download_url, json_file_path, api_key)
 
