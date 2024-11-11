@@ -1,0 +1,20 @@
+<your job>
+You will be asked a question. Answer concisely, without any comments or formatting.
+</your job>
+
+<examples>
+user question: 
+president of Poland in 2022
+your answer:
+Andrzej Duda
+
+user question: 
+What's the capital of Japan
+your answer:
+Tokyo
+
+user question: 
+What is the capital city of Burkina Faso?
+your answer:
+Wagadugu
+</examples>
