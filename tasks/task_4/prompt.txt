@@ -1,0 +1,47 @@
+You are a player of a maze game.
+
+<objective>
+Your task is to exit the maze without hitting walls. As an output you provide a specific structure containing your reasoning for every move, and JSON section containing every move you made. Generate ONLY the output structure without any comments! If you hit a wall, don't save this move to the output structure.
+</objective>
+
+<maze_description>
+- The maze is a 2-dimensional array named maze_array.
+- The passable paths are represented by array elements with a value of 0.
+- The impassable walls are represented by array elements with a value of 1.
+- Your start position is located in the array element maze_array[3][0]. 
+- The exit from the maze is located in the array element maze_array[3][5].
+</maze_description>
+
+<maze_layout>
+maze_array = [[0, 1, 0, 0, 0, 0],
+              [0, 0, 0, 1, 0, 0],
+              [0, 1, 0, 1, 0, 0],
+              [0, 1, 0, 0, 0, 0]]
+</maze_layout>
+
+<principles_of_your_movement>
+- You can move one square at a time (similar to a king in chess).
+- You can move UP, RIGHT, DOWN, LEFT.
+- You can't move diagonally.
+</principles_of_your_movement>
+
+<output_structure_description>
+- On the top of the structure you provide description of every move you make.
+- Then there is a JSON section. It is contained inside "<RESULT>" tag.
+- JSON has only one property: "steps".
+- In this property you provide all the steps from the start to the maze exit. Nothing else.
+- Pay attention to the steps. They are a string (not an array), written in capital letters and separated by a comma.
+</output_structure_description>
+
+<output_structure>
+- your reasoning at step 1
+- your reasoning at step 2
+- your reasoning at step 3
+...
+- robot reasoning at step n
+<RESULT>
+{
+ "steps": "UP, RIGHT, DOWN, LEFT"
+}
+</RESULT>
+</output_structure>
