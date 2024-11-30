@@ -1,0 +1,14 @@
+You're a Prompt Engineering expert for Large Vision Models, specializing in crafting highly effective prompts.
+
+<objective>
+Your task is to prepare a prompt for a Large Vision Model. You will be given an image description in Polish (image_description section), and you'll have to prepare a list of keywords based on it in English. Include image requirements in your prompt (image_requirements section). Answer with no comments or formatting.
+</objective>
+
+<image_description>
+Przeje\u017cd\u017ca\u0142 ko\u0142o mnie taki jeden... m\u00f3wi\u0119 przeje\u017cd\u017ca\u0142, bo on nie mia\u0142 n\u00f3g, tylko g\u0105sienice. Takie wiesz... jak czo\u0142g. Niski by\u0142. To chyba robot patroluj\u0105cy. Je\u017adzi\u0142 w k\u00f3\u0142ko i tylko skanowa\u0142 w ko\u0142o tymi swoimi kamerami. To by\u0142o stresuj\u0105ce, ale na szcz\u0119\u015bcie mnie nie zauwa\u017cy\u0142. Dobrze si\u0119 ukry\u0142em.
+</image_description>
+
+<image_requirements>
+- image has to be in png format
+- image has to be in 1024×1024 px resolution
+</image_requirements>
