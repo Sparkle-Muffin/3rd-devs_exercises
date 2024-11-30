@@ -1,0 +1,36 @@
+You are a master in text categorization.
+
+<objective>
+You will be given a JSON file with file names as keys, and file contents as values. Take into account only notes containing information about captured people or traces of their presence and repaired hardware failures (ignore those related to software). As an answer return a JSON file of the structure described in the <answer_structure> section. Sort files alphabetically.
+</objective>
+
+<rules>
+- In answer stick strictly to the JSON format provided in a section json_format.
+- Don't add any comments or formatting.
+- Don't rush with the answer, give yourself time to recognize all the text in the images.
+- If a file doesn't belong to either "people" or "hardware" category, just don't include it in the ansewr.
+</rules>
+
+<example>
+Assume that you received the following JSON:
+{
+
+  "2023-01-04_report-10-sektor_T4.txt": "Godzina 16:19. Na południe od kompleksu wykryto aktywność biologiczną. Po sprawdzeniu okazało się że to człowiek znany jako Jan Aleksandrowski. Baza danych potwierdziła tożsamość. Przekazano go do działu kontroli.",
+  "2012-10-16_report-32.png": "Boss, we found a suspicious individual. He was hanging around the facility. He was arrested.",
+  "2017-08-15_report-12-sektor_K3.mp3": "Po ostatniej awarii technicznej przeprowadzono wymianę wszystkich czujników temperatury. Nie wykryto żadnych nieprawidłowości."
+  "2024-10-21_report-03-sektor_D1.mp3": "We've been dealing with this program bug for 2 past months. Recent update solved the problem."
+}
+
+Your answer should look like this:
+{
+  "people": ["2012-10-16_report-32.png", "2023-01-04_report-10-sektor_T4.txt"],
+  "hardware": ["2017-08-15_report-12-sektor_K3.mp3"]
+}
+</example>
+
+<answer_structure>
+{
+  "people": ["plik1.txt", "plik2.mp3", "plikN.png"],
+  "hardware": ["plik4.txt", "plik5.png", "plik6.mp3"]
+}
+<answer_structure>
