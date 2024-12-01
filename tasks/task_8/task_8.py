@@ -8,7 +8,7 @@ from openai import OpenAI
 
 # Add the parent directory to the system path (otherwise the send_json.py can't be imported)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from send_json import send_json
+from tasks.common.send_json import send_json
 
 load_dotenv()
 
