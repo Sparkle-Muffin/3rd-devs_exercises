@@ -8,3 +8,10 @@ tasks/task_9/pliki_z_fabryki/
 *.jpeg
 *.png
 *.zip
+*.mp3
+tasks/task_10/article.html
+tasks/task_10/arxiv.txt
+tasks/task_10/GPT_markdown_script.md
+tasks/task_10/modified_markdown_script.md
+tasks/task_10/original_prompt.txt
+tasks/task_10/questions_prompt.txt
