@@ -2,13 +2,12 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from tasks.common.send_json import send_json
-from tasks.common.file_utils import read_file_content, save_json, read_json, download_file, extract_file
+from tasks.common.file_utils import read_file_content, save_json, read_json, download_file, extract_file, process_audio_files
 from tasks.common.openai_utils import call_openai
 
 from os import getenv
 from dotenv import load_dotenv
 import json
-import subprocess
 from openai import OpenAI
 from typing import List, Dict, Any
 from pathlib import Path
@@ -31,26 +30,6 @@ def process_files(extract_path: str) -> tuple[List[str], List[str], List[str]]:
         find_files(extract_path, ".mp3"),
         find_files(extract_path, ".png")
     )
-
-
-def process_audio_files(audio_files: List[str], output_dir: str) -> None:
-    """Process audio files using Whisper."""
-    os.makedirs(output_dir, exist_ok=True)
-    
-    for input_file in audio_files:
-        output_file = Path(output_dir) / f"{Path(input_file).stem}.json"
-        command = (
-            f"insanely-fast-whisper "
-            f"--device-id 0 "
-            f"--transcript-path {output_file} "
-            f"--file-name {input_file}"
-        )
-        
-        try:
-            subprocess.run(command, shell=True, check=True, text=True)
-            print(f"Successfully processed {input_file}")
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to process {input_file}: {e}")
 
 
 def merge_files(txt_files: List[str], png_files: List[str], audio_dir: str, images_json: str) -> Dict:
@@ -90,7 +69,7 @@ def main():
     
     # Process audio files
     audio_output_dir = Path(__file__).parent / "translated_mp3_files"
-    # process_audio_files(mp3_files, audio_output_dir)
+    process_audio_files(mp3_files, audio_output_dir)
     
     # Process images
     prompt_dir = Path(__file__).parent / "images_to_text_prompt.txt"
@@ -118,8 +97,8 @@ def main():
         f"{classification_prompt}\n\n{files_content}",
         response_format={"type": "json_object"}
     )
-    GPT_files_classification = Path(__file__).parent / "GPT_files_classification.json"
-    save_json(json.loads(classification_response), GPT_files_classification)
+    GPT_files_classification_path = Path(__file__).parent / "GPT_files_classification.json"
+    save_json(json.loads(classification_response), GPT_files_classification_path)
     
     # Create and send submission
     submission = {

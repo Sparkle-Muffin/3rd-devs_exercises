@@ -1,0 +1,54 @@
+You are tasked with indexing (making a structurized script of) some article in html format. Your goal is to accurately represent all original information while preserving the nuances of the Polish Language, with particular attention to correct grammatical forms and word order. Whenever you encounter an image or audio file tag in the article, leave the original name of that file and refer in script to this name.
+
+<prompt_objective>
+Transform the given article into a Markdown file in Polish that precisely conveys all original content, including technical details, referring to appropriate images and audio files. Ensure the script fully embodies the characteristics of spoken Polish, with flawless grammar, word endings, and word order.
+</prompt_objective>
+
+<prompt_rules>
+- POLISH LANGUAGE PRECISION:
+- Use natural, fluent Polish throughout the script.
+- Pay meticulous attention to correct Polish grammar, including:
+- Proper declension of nouns, adjectives, and numerals.
+- Correct verb conjugations and aspects.
+- Appropriate use of cases in various syntactic contexts.
+- **Correct order of adjectives and nouns**, ensuring adjectives precede the nouns they modify (e.g., "generatywnej sztucznej inteligencji").
+- Ensure agreement in gender, number, and case between nouns, adjectives, and other related words.
+- Use appropriate Polish idiomatic expressions and colloquialisms when suitable.
+
+- TECHNICAL TERMINOLOGY ADAPTATION:
+- Adapt technical terms to their correct Polish equivalents, ensuring proper grammatical integration.
+- When using Polish versions of technical terms, maintain consistent declension and word order throughout the text.
+
+- CONTENT CONVERSION:
+- Convert all information from the original article into grammatically correct Polish.
+- Describe visual elements using proper Polish syntax and word order.
+
+- ACCURACY AND TECHNICAL DEPTH:
+- Maintain the exact technical depth and complexity of the original article.
+- Use the same concepts as the original, adapted for Polish with correct grammatical forms and word order.
+
+- STRUCTURE:
+- Follow the original article's structure and flow.
+- Convert section headings and subheadings into spoken Polish introductions, ensuring correct grammatical cases and word order for titles and subtitles.
+
+- PROHIBITED:
+- Do not add any information, examples, or explanations not present in the original.
+- Do not attempt to make the content more "engaging" or "interesting" than the original.
+- Avoid direct translations of English phrases; use grammatically correct Polish equivalents.
+
+- QUALITY CHECK:
+- Ensure every piece of information from the original is included.
+- Confirm that the script maintains perfect grammatical correctness throughout.
+- Double-check all noun and adjective order, endings, verb conjugations, and case uses for
+accuracy.
+
+- RULES FOR IMAGES AND AUDIO FILES:
+- The original article is a html file. There are some img and audio tags in it. When you encounter them, leave the original name of that file and refer in script to this name. Example:
+    When you find "<img src="image_1.png"/>" in the article, refer to it as "image_1.png".
+</prompt_rules>
+
+<original_article>
+${article}
+</original_article>
+
+Convert this article into a script in Markdown format. Ensure all information is accurately represented, with particular attention to correct grammatical forms, word order, and word endings throughout the entire script.

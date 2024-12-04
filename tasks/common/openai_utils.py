@@ -22,21 +22,35 @@ def create_image_message(image_paths: List[str]) -> List[Dict]:
 
 def call_openai(
     client: OpenAI,
-    prompt: str,
+    messages: List[Dict[str, str]],
     images: Optional[List[str]] = None,
     model: str = "gpt-4o",
-    response_format: Optional[Dict] = None
+    response_format: Optional[Dict] = None,
 ) -> str:
-    """Make an OpenAI API call with optional images."""
-    message_content = [{"type": "text", "text": prompt}]
+    """Make an OpenAI API call with multiple messages and optional images.
     
-    if images:
-        message_content.extend(create_image_message(images))
+    Args:
+        client: OpenAI client instance
+        messages: List of message dictionaries, each containing 'role' and 'prompt'
+                 Example: [
+                     {'role': 'system', 'content': 'You are a helpful assistant'},
+                     {'role': 'user', 'content': 'Hello'}
+                 ]
+        images: Optional list of image paths
+        model: The model to use
+        response_format: Optional response format specification
+    """
+    formatted_messages = []
+    for msg in messages:
+        content = [{"type": "text", "text": msg['content']}]
+        if msg['role'] == 'user' and images:
+            content.extend(create_image_message(images))
+        formatted_messages.append({"role": msg['role'], "content": content})
     
     response = client.chat.completions.create(
         model=model,
         response_format=response_format,
-        messages=[{"role": "user", "content": message_content}]
+        messages=formatted_messages
     )
-    
+    print(response.choices[0].message.content)
     return response.choices[0].message.content 
