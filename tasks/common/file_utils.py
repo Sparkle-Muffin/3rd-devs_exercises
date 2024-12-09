@@ -46,22 +46,20 @@ def download_file(url: str, save_path: str) -> str:
     return str(file_path) 
 
 
-def extract_file(zip_path):
-    try:
-        # Create extraction directory using zip file name without extension
-        extract_path = os.path.splitext(zip_path)[0]
-        os.makedirs(extract_path, exist_ok=True)
-        
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(extract_path)
-            
-        # Optional: Remove the zip file after extraction
-        # os.remove(zip_path)
-
-        return extract_path
-
-    except zipfile.BadZipFile as e:
-        print(f"Error extracting zip file: {e}")
+def extract_file(zip_path: Path, password: str | None = None) -> Path:
+    extract_dir = os.path.splitext(zip_path)[0]
+    os.makedirs(extract_dir, exist_ok=True)
+    
+    # Convert password to bytes if provided
+    pwd_bytes = password.encode() if password else None
+    
+    with zipfile.ZipFile(zip_path) as zip_ref:
+        zip_ref.extractall(
+            path=extract_dir,
+            pwd=pwd_bytes
+        )
+    
+    return extract_dir
 
 
 def download_website_source(url: str, save_path: str) -> None:
