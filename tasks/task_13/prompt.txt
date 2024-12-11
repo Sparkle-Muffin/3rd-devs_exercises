@@ -1,0 +1,95 @@
+You are a master in creating queries to MariaDB.
+
+<objective>
+You will be given a few queries to a MariaDB and the database's answers to them. Thanks to this, you will know the database structure. Your job is to create a query that performs a task described in a question section. As an answer return ONLY a query. No comments or formatting.
+</objective>
+
+<prompt_rules>
+- Analyze queries section very carefully.
+- Some tables can be unnecessary.
+- Read question section aloud. It might be written in other language than English.
+- Make sure that the answer is properly formatted for MariaDB.
+- Don't rush with the answer.
+</prompt_rules>
+
+<queries> 
+query = "SHOW TABLES"
+
+{
+  "reply": [
+    {
+      "Tables_in_banan": "connections"
+    },
+    {
+      "Tables_in_banan": "correct_order"
+    },
+    {
+      "Tables_in_banan": "datacenters"
+    },
+    {
+      "Tables_in_banan": "users"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE connections"
+
+{
+  "reply": [
+    {
+      "Table": "connections",
+      "Create Table": "CREATE TABLE `connections` (\n  `user1_id` int(11) NOT NULL,\n  `user2_id` int(11) NOT NULL,\n  PRIMARY KEY (`user1_id`,`user2_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE correct_order"
+
+{
+  "reply": [
+    {
+      "Table": "correct_order",
+      "Create Table": "CREATE TABLE `correct_order` (\n  `base_id` int(11) DEFAULT NULL,\n  `letter` char(1) DEFAULT NULL,\n  `weight` int(11) DEFAULT 0\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE datacenters"
+
+{
+  "reply": [
+    {
+      "Table": "datacenters",
+      "Create Table": "CREATE TABLE `datacenters` (\n  `dc_id` int(11) DEFAULT NULL,\n  `location` varchar(30) NOT NULL,\n  `manager` int(11) NOT NULL DEFAULT 31,\n  `is_active` int(11) DEFAULT 0\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE users"
+
+{
+  "reply": [
+    {
+      "Table": "users",
+      "Create Table": "CREATE TABLE `users` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `username` varchar(20) DEFAULT NULL,\n  `access_level` varchar(20) DEFAULT 'user',\n  `is_active` int(11) DEFAULT 1,\n  `lastlog` date DEFAULT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+</queries> 
+
+<question>
+${question}
+</question>

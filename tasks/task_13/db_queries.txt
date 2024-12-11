@@ -1,0 +1,233 @@
+query = "SHOW TABLES"
+
+{
+  "reply": [
+    {
+      "Tables_in_banan": "connections"
+    },
+    {
+      "Tables_in_banan": "correct_order"
+    },
+    {
+      "Tables_in_banan": "datacenters"
+    },
+    {
+      "Tables_in_banan": "users"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE connections"
+
+{
+  "reply": [
+    {
+      "Table": "connections",
+      "Create Table": "CREATE TABLE `connections` (\n  `user1_id` int(11) NOT NULL,\n  `user2_id` int(11) NOT NULL,\n  PRIMARY KEY (`user1_id`,`user2_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE correct_order"
+
+{
+  "reply": [
+    {
+      "Table": "correct_order",
+      "Create Table": "CREATE TABLE `correct_order` (\n  `base_id` int(11) DEFAULT NULL,\n  `letter` char(1) DEFAULT NULL,\n  `weight` int(11) DEFAULT 0\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE datacenters"
+
+{
+  "reply": [
+    {
+      "Table": "datacenters",
+      "Create Table": "CREATE TABLE `datacenters` (\n  `dc_id` int(11) DEFAULT NULL,\n  `location` varchar(30) NOT NULL,\n  `manager` int(11) NOT NULL DEFAULT 31,\n  `is_active` int(11) DEFAULT 0\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SHOW CREATE TABLE users"
+
+{
+  "reply": [
+    {
+      "Table": "users",
+      "Create Table": "CREATE TABLE `users` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `username` varchar(20) DEFAULT NULL,\n  `access_level` varchar(20) DEFAULT 'user',\n  `is_active` int(11) DEFAULT 1,\n  `lastlog` date DEFAULT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT COUNT(*) FROM connections"
+
+{
+  "reply": [
+    {
+      "COUNT(*)": "151"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT COUNT(*) FROM correct_order"
+
+{
+  "reply": [
+    {
+      "COUNT(*)": "21"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT COUNT(*) FROM datacenters"
+
+{
+  "reply": [
+    {
+      "COUNT(*)": "9"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT COUNT(*) FROM users"
+
+{
+  "reply": [
+    {
+      "COUNT(*)": "98"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT * FROM connections LIMIT 3"
+
+{
+  "reply": [
+    {
+      "user1_id": "1",
+      "user2_id": "5"
+    },
+    {
+      "user1_id": "1",
+      "user2_id": "20"
+    },
+    {
+      "user1_id": "1",
+      "user2_id": "54"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT * FROM correct_order LIMIT 3"
+
+{
+  "reply": [
+    {
+      "base_id": "7742",
+      "letter": "D",
+      "weight": "16"
+    },
+    {
+      "base_id": "8823",
+      "letter": "N",
+      "weight": "6"
+    },
+    {
+      "base_id": "1892",
+      "letter": "E",
+      "weight": "17"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT * FROM datacenters LIMIT 3"
+
+{
+  "reply": [
+    {
+      "dc_id": "8547",
+      "location": "Warszawa",
+      "manager": "22",
+      "is_active": "0"
+    },
+    {
+      "dc_id": "1226",
+      "location": "Kraków",
+      "manager": "44",
+      "is_active": "1"
+    },
+    {
+      "dc_id": "6491",
+      "location": "Wrocław",
+      "manager": "31",
+      "is_active": "1"
+    }
+  ],
+  "error": "OK"
+}
+
+//====================================================================//
+
+query = "SELECT * FROM users LIMIT 3"
+
+{
+  "reply": [
+    {
+      "id": "1",
+      "username": "Adrian",
+      "access_level": "user",
+      "is_active": "1",
+      "lastlog": "2023-06-12"
+    },
+    {
+      "id": "2",
+      "username": "Monika",
+      "access_level": "user",
+      "is_active": "1",
+      "lastlog": "2023-09-29"
+    },
+    {
+      "id": "3",
+      "username": "Azazel",
+      "access_level": "removed",
+      "is_active": "0",
+      "lastlog": "2026-11-05"
+    }
+  ],
+  "error": "OK"
+}
