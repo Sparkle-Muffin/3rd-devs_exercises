@@ -7,6 +7,8 @@ from pathlib import Path
 import subprocess
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import shutil
+
 
 def save_txt_file(content: str, file_path: str) -> None:
     """Save content to a text file."""
@@ -62,6 +64,33 @@ def extract_file(zip_path: Path, password: str | None = None) -> Path:
     return extract_dir
 
 
+def copy_files_to_directory(files: List[Path], import_dir: Path) -> None:
+    """Copy files to a directory.
+    
+    Args:
+        files: List of paths to files
+        import_dir: Path to a directory
+    """
+    try:
+        import_dir.mkdir(parents=True, exist_ok=True)
+        
+        for file in files:
+            destination = import_dir / file.name
+            try:
+                shutil.copy2(file, destination)
+            except PermissionError:
+                print(f"Permission denied: Unable to copy {file} to {destination}")
+                print("Please ensure you have write permissions to the destination directory")
+                raise
+            except Exception as e:
+                print(f"Error copying {file} to {destination}: {e}")
+                raise
+    except PermissionError:
+        print(f"Permission denied: Unable to create directory {import_dir}")
+        print("Please ensure you have write permissions to create the directory")
+        raise
+
+
 def download_website_source(url: str, save_path: str) -> None:
     try:
         response = requests.get(url)
@@ -71,6 +100,7 @@ def download_website_source(url: str, save_path: str) -> None:
         print(f"Website source code saved to {save_path}")
     except requests.RequestException as e:
         print(f"An error occurred: {e}")
+
 
 def process_audio_files(audio_files: List[str], output_dir: str) -> None:
     """Process audio files using Whisper."""
