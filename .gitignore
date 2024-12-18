@@ -6,6 +6,7 @@
 *.zip
 *.mp3
 *.pyc
+*.csv
 miscellaneous/
 tasks/task_6/przesluchania/
 tasks/task_6/translations/
