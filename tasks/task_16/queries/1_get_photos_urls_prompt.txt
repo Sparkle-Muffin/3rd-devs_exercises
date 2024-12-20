@@ -1,0 +1,82 @@
+<objective>
+You are given a short note mentioning photos. Your task is to find the URLs of the photos mentioned in the note.
+</objective>
+
+<prompt_rules>
+- You should find the names and URLs of the photos mentioned in the note.
+- For the "photo_x_name" field, use the name of the photo adding its extension.
+- For the "photo_x_url" field, use the URL of the photo.
+- Answer in a JSON format with the structure specified in the "output_format" section.
+- Don't add any comments or formatting in your response.
+<prompt_rules>
+
+<examples>
+# EXAMPLE 1
+- Note: "Cześć! Mówili Ci że mam te zdjęcia. No mam! Proszę bardzo: IMG_664.PNG, IMG_9643.PNG, IMG_156.PNG, IMG_1365.PNG. Wspomniane zdjęcia znajdziesz tutaj: https:\/\/czolgi.agenci.org\/zuk\/ogorek\/. Nie zapominaj, że mogę Ci z nimi pomóc (polecenia: RESCALE\/ZOOM IN\/ZOOM OUT)."
+- Output: 
+{
+    "photos": [
+        {
+            "photo_name": "IMG_664.PNG",
+            "photo_url": "https://czolgi.agenci.org/zuk/ogorek/IMG_664.PNG"
+        },
+        {
+            "photo_name": "IMG_9643.PNG",
+            "photo_url": "https://czolgi.agenci.org/zuk/ogorek/IMG_9643.PNG"
+        },
+        {
+            "photo_name": "IMG_156.PNG",
+            "photo_url": "https://czolgi.agenci.org/zuk/ogorek/IMG_156.PNG"
+        },
+        {
+            "photo_name": "IMG_1365.PNG",
+            "photo_url": "https://czolgi.agenci.org/zuk/ogorek/IMG_1365.PNG"
+        }
+    ]
+}
+# EXAMPLE 2
+- Note: "Kogo moje oczy widzą! Numer dziesiąty!. Spójrz na fotki które zdobyliśmy. https:\/\/centralny.agents.org\/danie\/janusz\/IMG_1908.PNG https:\/\/centralny.agents.org\/danie\/janusz\/IMG_473.PNG https:\/\/centralny.agents.org\/danie\/janusz\/IMG_2137.PNG https:\/\/centralny.agents.org\/danie\/janusz\/IMG_1943.PNG. Nie zapominaj, że mogę wykonać następujące czynności (polecenia: REPAIR\/DARKEN\/BRIGHTEN)."
+- Output: 
+{
+    "photos": [
+        {
+            "photo_name": "IMG_1908.PNG",
+            "photo_url": "https://centralny.agents.org/danie/janusz/IMG_1908.PNG"
+        },
+        {
+            "photo_name": "IMG_473.PNG",
+            "photo_url": "https://centralny.agents.org/danie/janusz/IMG_473.PNG"
+        },
+        {
+            "photo_name": "IMG_2137.PNG",
+            "photo_url": "https://centralny.agents.org/danie/janusz/IMG_2137.PNG"
+        },
+        {
+            "photo_name": "IMG_1943.PNG",
+            "photo_url": "https://centralny.agents.org/danie/janusz/IMG_1943.PNG"
+        }
+    ]
+}
+</examples>
+
+<output_format>
+{
+  "photos": [
+    {
+      "photo_name": "name of the photo 1",
+      "photo_url": "url of the photo 1"
+    },
+    {
+      "photo_name": "name of the photo 2",
+      "photo_url": "url of the photo 2"
+    },
+    .
+    .
+    .
+    {
+      "photo_name": "name of the photo n",
+      "photo_url": "url of the photo n"
+    }
+  ]
+}
+</output_format>

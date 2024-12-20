@@ -1,26 +1,21 @@
 import requests
 import json
+from pathlib import Path
 
-def send_json(url, filepath):  
-    """Send JSON file to a specified URL via POST request."""
-    try:
-        with open(filepath, 'r') as file:
-            data = json.load(file)
-        response = requests.post(url, json=data)
-        print("Response status code:", response.status_code)
-        
-        # Get and format the response
-        try:
-            response_data = response.json()
-            print("\nServer Response:")
-            print(json.dumps(response_data, indent=2))  # Pretty print full JSON response
-            return response_data
-        except json.JSONDecodeError:
-            print("\nServer Response (raw):")
-            print(response.text)  # Print raw response if not JSON
-            return response.text
-            
-    except json.JSONDecodeError:
-        print("Invalid JSON format in file:", filepath)
-    except requests.exceptions.RequestException as e:
-        print("Error sending file:", e)
+def send_json(url: str, json_input) -> dict:
+    """
+    Send JSON data to a URL and return the response.
+    
+    Args:
+        url: The URL to send the request to
+        json_input: Either a Path object pointing to a JSON file, or a dict/JSON-serializable object
+    """
+    # Handle input that's either a file path or direct JSON data
+    if isinstance(json_input, (str, Path)):
+        with open(json_input) as f:
+            data = json.load(f)
+    else:
+        data = json_input
+
+    response = requests.post(url, json=data)
+    return response.json()
