@@ -3,6 +3,7 @@
 *.jpg
 *.jpeg
 *.png
+*.PNG
 *.zip
 *.mp3
 *.pyc
