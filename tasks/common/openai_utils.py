@@ -1,12 +1,15 @@
 from typing import Dict, List, Optional
 import base64
 from openai import OpenAI
-from pathlib import Path
+import json
+from file_utils import save_json, save_file
+
 
 def encode_image(image_path: str) -> str:
     """Encode image file to base64 string."""
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
+
 
 def create_image_message(image_paths: List[str]) -> List[Dict]:
     """Create OpenAI message format for images."""
@@ -20,12 +23,14 @@ def create_image_message(image_paths: List[str]) -> List[Dict]:
         for path in image_paths
     ]
 
+
 def call_openai(
     client: OpenAI,
     messages: List[Dict[str, str]],
     images: Optional[List[str]] = None,
     model: str = "gpt-4o",
     response_format: Optional[Dict] = None,
+    response_path: Optional[str] = None,
 ) -> str:
     """Make an OpenAI API call with multiple messages and optional images.
     
@@ -43,7 +48,7 @@ def call_openai(
     formatted_messages = []
     for msg in messages:
         content = [{"type": "text", "text": msg['content']}]
-        if msg['role'] == 'user' and images:
+        if images:
             content.extend(create_image_message(images))
         formatted_messages.append({"role": msg['role'], "content": content})
     
@@ -52,5 +57,16 @@ def call_openai(
         response_format=response_format,
         messages=formatted_messages
     )
+
     print(response.choices[0].message.content)
-    return response.choices[0].message.content 
+
+    response = response.choices[0].message.content
+    if response_format["type"] == "json_object":
+        response = json.loads(response.replace("```json", "").replace("```", ""))
+        if response_path:
+            save_json(response, response_path)
+    else:
+        if response_path:
+            save_file(response, response_path)
+
+    return response
