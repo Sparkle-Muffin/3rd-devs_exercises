@@ -25,7 +25,7 @@ You are given a number of photos showing one or more people. Your job is to prec
     - Neck-note protruding Adam’s apple or hanging jowls
     - Complexion-note pores, pockmarks, acne, razor rash, bumps
     - Facial hair-clean shaven? unshaven? beard, mustache, goatee, sideburns?
-    - Tattoos-shape and style; on what part of the body
+    - Tattoos-shape and style; on what part of the body: left arm, right shin, etc.
 
 # Clothing information is also very important:
     - Hat-note color, style, ornaments, how it is worn (bill forward, backward, to one side)

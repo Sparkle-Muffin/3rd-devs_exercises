@@ -8,6 +8,8 @@ import subprocess
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import shutil
+from urllib.parse import urljoin, urlsplit
+from os import listdir
 
 
 def save_txt_file(content: str, file_path: str) -> None:
@@ -201,3 +203,82 @@ def download_files_from_website(url, file_tag_str, save_directory, rename_files=
     
     print(f"Successfully downloaded {file_count} files.")
     return file_count
+
+
+def combine_json_files(file_1_content, file_2_content, output_file):
+    """
+    Combines two JSON file contents into a single JSON file with a flexible structure.
+
+    :param file_1_content: JSON content from the first file as a string or dictionary.
+    :param file_2_content: JSON content from the second file as a string or dictionary.
+    :param output_file: Path to save the combined JSON file.
+    """
+    # Load JSON data from the inputs
+    if isinstance(file_1_content, str):
+        data1 = json.loads(file_1_content)
+    else:
+        data1 = file_1_content
+
+    if isinstance(file_2_content, str):
+        data2 = json.loads(file_2_content)
+    else:
+        data2 = file_2_content
+
+    # Ensure both inputs are dictionaries
+    if not isinstance(data1, dict) or not isinstance(data2, dict):
+        raise ValueError("Both input files must be JSON objects (dictionaries).")
+
+    # Combine the data flexibly
+    combined_data = {}
+
+    # Combine keys that exist in both inputs
+    for key in set(data1.keys()).union(data2.keys()):
+        if key in data1 and key in data2:
+            # If both keys have lists as values, combine element-wise
+            if isinstance(data1[key], list) and isinstance(data2[key], list):
+                if len(data1[key]) != len(data2[key]):
+                    raise ValueError(f"The lists under the key '{key}' must have the same length.")
+                combined_data[key] = [{**elem1, **elem2} for elem1, elem2 in zip(data1[key], data2[key])]
+            else:
+                # If the values are not lists, create a tuple of both values
+                combined_data[key] = (data1[key], data2[key])
+        elif key in data1:
+            combined_data[key] = data1[key]
+        elif key in data2:
+            combined_data[key] = data2[key]
+
+    # Write the combined data to the output file
+    with open(output_file, 'w') as f:
+        json.dump(combined_data, f, indent=4)
+
+    print(f"Combined JSON has been saved to {output_file}")
+    return combined_data
+
+
+def get_file_paths_from_dir(dir_path):
+    return [dir_path / file for file in listdir(dir_path)]
+
+
+def get_url_path_without_filename(url):
+    split_url = urlsplit(url)  # Split the URL into components
+    base_url = urljoin(url, split_url.path.rsplit('/', 1)[0] + '/')  # Reconstruct URL without the filename
+    return base_url
+
+
+def send_json(url: str, json_input) -> dict:
+    """
+    Send JSON data to a URL and return the response.
+    
+    Args:
+        url: The URL to send the request to
+        json_input: Either a Path object pointing to a JSON file, or a dict/JSON-serializable object
+    """
+    # Handle input that's either a file path or direct JSON data
+    if isinstance(json_input, (str, Path)):
+        with open(json_input) as f:
+            data = json.load(f)
+    else:
+        data = json_input
+
+    response = requests.post(url, json=data)
+    return response.json()
