@@ -1,0 +1,32 @@
+{
+  "photos": [
+    {
+      "photo_name": "IMG_559_NRR7.PNG",
+      "photo_url": "https://centrala.ag3nts.org/dane/barbara/IMG_559_NRR7.PNG",
+      "local_photo_path": "/media/veracrypt1/JAWNE/REPOZYTORIA/Python_POST/tasks/task_16/fixed_photos/IMG_559_NRR7.PNG",
+      "photo_action": "OK",
+      "photo_shows_face": "1"
+    },
+    {
+      "photo_name": "IMG_1410_FXER.PNG",
+      "photo_url": "https://centrala.ag3nts.org/dane/barbara/IMG_1410_FXER.PNG",
+      "local_photo_path": "/media/veracrypt1/JAWNE/REPOZYTORIA/Python_POST/tasks/task_16/fixed_photos/IMG_1410_FXER.PNG",
+      "photo_action": "OK",
+      "photo_shows_face": "1"
+    },
+    {
+      "photo_name": "IMG_1443_FT12.PNG",
+      "photo_url": "https://centrala.ag3nts.org/dane/barbara/IMG_1443_FT12.PNG",
+      "local_photo_path": "/media/veracrypt1/JAWNE/REPOZYTORIA/Python_POST/tasks/task_16/fixed_photos/IMG_1443_FT12.PNG",
+      "photo_action": "OK",
+      "photo_shows_face": "1"
+    },
+    {
+      "photo_name": "IMG_1444.PNG",
+      "photo_url": "https://centrala.ag3nts.org/dane/barbara/IMG_1444.PNG",
+      "local_photo_path": "/media/veracrypt1/JAWNE/REPOZYTORIA/Python_POST/tasks/task_16/fixed_photos/IMG_1444.PNG",
+      "photo_action": "OK",
+      "photo_shows_face": "0"
+    }
+  ]
+}

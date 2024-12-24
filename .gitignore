@@ -24,3 +24,4 @@ tasks/task_12/pliki_z_fabryki/
 tasks/qdrant_storage/
 tasks/task_13/GPT_response.txt
 tasks/task_17/download_files/
+!tasks/*/program_files/*

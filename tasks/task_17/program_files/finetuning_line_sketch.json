@@ -1,0 +1,16 @@
+{
+    "messages": [
+        {
+            "role": "system",
+            "content": "Classify content as correct or incorrect. Answer only with 'correct' or 'incorrect' label without any comments or formatting."
+        },
+        {
+            "role": "user",
+            "content": "placeholder"
+        },
+        {
+            "role": "assistant",
+            "content": "placeholder"
+        }
+    ]
+}
