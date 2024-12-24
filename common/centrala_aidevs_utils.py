@@ -23,12 +23,12 @@ class AidevsMessageHandler:
         files = list(directory.glob("*.json"))
         return len(files) + 1
 
-    def ask_centrala_aidevs(self, message):
-        """Send a message to the centrala aidevs server and save query/response files."""
+    def ask_centrala_aidevs(self, answer):
+        """Send an answer to the centrala aidevs server and save query/response files."""
         query = {
             "task": self.task_name,
             "apikey": self.api_key,
-            "answer": message
+            "answer": answer
         }
         
         # Determine file paths

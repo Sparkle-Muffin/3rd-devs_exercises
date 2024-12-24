@@ -63,6 +63,7 @@ def extract_file(zip_path: Path, password: str | None = None) -> Path:
             pwd=pwd_bytes
         )
     
+    extract_dir = Path(extract_dir)
     return extract_dir
 
 
