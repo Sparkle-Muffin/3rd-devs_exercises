@@ -10,6 +10,7 @@ from urllib.parse import urljoin
 import shutil
 from urllib.parse import urljoin, urlsplit
 from os import listdir
+import json
 
 
 def save_txt_file(content: str, file_path: str) -> None:
@@ -44,10 +45,27 @@ def download_file(url: str, save_path: str) -> str:
     filename = response.headers.get("Content-Disposition", "").split("filename=")[-1].strip('"') or url.split("/")[-1]
     file_path = Path(save_path) / filename
     
-    with open(file_path, 'wb') as f:
-        f.write(response.content)
+    # Check if the file is JSON
+    is_json = file_path.suffix.lower() == '.json'
     
-    return str(file_path) 
+    if is_json:
+        # Parse and save JSON with proper encoding
+        content = response.json()
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(content, f, ensure_ascii=False, indent=4)
+    else:
+        # Handle other text files
+        content_type = response.headers.get('Content-Type', '').lower()
+        is_text = 'text' in content_type or file_path.suffix.lower() == '.txt'
+        
+        if is_text:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(response.text)
+        else:
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+    
+    return str(file_path)
 
 
 def extract_file(zip_path: Path, password: str | None = None) -> Path:

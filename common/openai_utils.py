@@ -86,3 +86,8 @@ class OpenaiClient:
             save_txt_file(response, response_path)
 
         return response
+    
+    
+    def decode_image(self, encoded_image: str) -> str:
+        """Decode base64 string to image file."""
+        return base64.b64decode(encoded_image)
