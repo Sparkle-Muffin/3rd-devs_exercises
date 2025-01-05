@@ -43,7 +43,8 @@ class OpenaiClient:
         messages: List[Dict[str, str]],
         images: Optional[List[str]] = None,
         model: str = "gpt-4o",
-        response_format: Optional[Dict] = None
+        response_format: Optional[Dict] = None,
+        temperature: Optional[float] = None
     ) -> str:
         """Make an OpenAI API call with multiple messages and optional images.
         
@@ -68,7 +69,8 @@ class OpenaiClient:
         response = self.client.chat.completions.create(
             model=model,
             response_format=response_format,
-            messages=formatted_messages
+            messages=formatted_messages,
+            temperature=temperature
         )
 
         response = response.choices[0].message.content

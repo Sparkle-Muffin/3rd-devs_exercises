@@ -1,9 +1,9 @@
 from pyngrok import ngrok
 import logging
-from typing import Optional
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
 
 class NgrokTunnel:
     def __init__(self):
