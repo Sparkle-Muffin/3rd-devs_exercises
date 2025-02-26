@@ -1,14 +1,45 @@
-# Python POST
+# 3rd-devs_exercises
 
 ## Overview
 
-This is a simple Python project made solely for the purposes of AI_devs 3 course. It enables sending JSON files by a POST method.
+This is a repository containing exercises from an online course [AI_devs 3](https://www.aidevs.pl/). 
 
 ## Description
 
-The project consists of the following files:
+The project structure is as follows:
+```
+3rd-devs_exercises/
+├── common/
+│   ├── ngrok_utils.py
+│   ├── openai_utils.py
+│   ├── opencv_utils.py
+│   └── ...
+└── tasks/
+    ├── task_1/
+    ├── task_2/
+    ├── ...
+    └── task_20/
+        ├── centrala_queries/
+        ├── centrala_responses/
+        ├── downloads/
+        ├── openai_responses/
+        ├── program_files/
+        ├── prompts/
+        └── task_20.py
+```
+where:
+- common/ - contains common utilities for the project
+- tasks/ - contains tasks from the course
+- centrala_queries/ - contains queries to the AI devs server
+- centrala_responses/ - contains responses from the AI devs server
+- downloads/ - contains downloaded files
+- openai_responses/ - contains responses from the OpenAI API
+- program_files/ - contains files created by the program
+- prompts/ - contains prompts for the OpenAI API
+- task_X.py - contains the main program code for the task X
 
-*  send_json.py - send_json() function sends JSON file to a specified url.
-* /tasks/task_X/task.py - The functions in those files are responsible for performing actions specified in a given task. For example, in the task_0, the exercise is to download 2 strings from a given url, save them in a JSON file, and send this file to another url. The JSON file is created in the same directory.
-* .env - You should create this file in a root directory of your project. 
-Inside it, you should place your API_KEY in the following manner: API_KEY = "XXXXXXXXXXXXXX". Don't show this file to anyone - it is listed in the .gitignore by default.
+centrala_queries, centrala_responses and openai_responses directories are not included in the GitHub repository, because their contents are created dynamically during the execution of the program.
+
+## Disclaimer
+
+As the course progressed, my approach to solving the tasks changed. Therefore, the code in the repository is not always consistent. It results in that some tasks, especially the older ones, will run only when you checkout the corresponding commit, for example "add task 5" for task_5. I'm going to fix this issue soon.
