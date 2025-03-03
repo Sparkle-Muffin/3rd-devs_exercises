@@ -28,11 +28,12 @@ def main():
     text_blocks_dir = program_files_dir / "text_blocks"
     text_blocks_dir.mkdir(parents=True, exist_ok=True)
     text_blocks_prefix = text_blocks_dir / "text_block"
+    notebook_with_dates_path = program_files_dir / "notebook_with_dates.txt"
 
 
     # 1. Download notebook and convert to plaintext
     notebook_pdf_path = download_file(notebook_url, downloads_dir)
-    pdf_to_text(notebook_pdf_path, notebook_txt_path)
+    pdf_to_text(notebook_pdf_path, notebook_txt_path, number_the_pages=True)
 
     
     # 2. Convert last page to image
@@ -68,10 +69,23 @@ def main():
     questions_path = download_file(questions_url, downloads_dir)
 
 
-    # 7. Ask OpenAI to answer the questions
+    # 7. Ask OpenAI to add date information to the text
+    prompt = read_file_content(prompts_dir / "add_dates_to_the_text.txt")
+    text_to_read = read_file_content(notebook_txt_path)
+    messages = [
+        {'role': 'system', 'content': prompt},
+        {'role': 'user', 'content': 
+         f"//=============== TEXT ===============//:\n\n{text_to_read}"}
+    ]
+    response = openai_msg_handler.call_openai(messages)
+    with open(notebook_with_dates_path, 'w', encoding='utf-8') as f:
+        f.write(response)
+
+
+    # 8. Ask OpenAI to answer the questions
     prompt = read_file_content(prompts_dir / "answer_the_questions.txt")
     questions = read_file_content(questions_path)
-    text_to_read = read_file_content(notebook_txt_path)
+    text_to_read = read_file_content(notebook_with_dates_path)
     messages = [
         {'role': 'system', 'content': prompt},
         {'role': 'user', 'content': 
@@ -82,7 +96,7 @@ def main():
     answers = response["answers"]
 
 
-    # 8. Send answers to Aidevs
+    # 9. Send answers to Aidevs
     aidevs_msg_handler.ask_centrala_aidevs(answers)
 
 

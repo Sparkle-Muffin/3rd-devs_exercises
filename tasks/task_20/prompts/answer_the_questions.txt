@@ -19,49 +19,51 @@ Your task is to find the information in the text and answer the questions.
 </prompt_rules>
 
 <pay_attention>
-EXAMPLE_1:
-There can be references to significant events, like:
-"To wydarzenie miało miejsce wtedy kiedy założono Teslę."
+# EXAMPLE_1:
+There can be references to some significant historical events, like:
+    "Musimy cofnąć się do początków tej technologii. Od tego się zaczęło."
+    ...
+    "Pierwszy iPhone to rok 2007."
+    ...
+    "W iPhone 5S dodano czytnik linii papilarnych. (było to w roku 2013)."
+    ...
 
-If there is no straight answer in the text, refer to your knowledge to find a year or a date of that event.
-
+If there is no straight answer in the text, refer to the events mentioned nearby in the text. 
 For the question:
-"W którym roku miało miejsce to wydarzenie?"
+    "Który rok ma autor na myśli wspominając o początkach technologii?"
 You should find and combine all useful information and answer:
-"To wydarzenie miało miejsce w roku 2003."
+    "Autor ma na myśli rok 2007."
 
-EXAMPLE_2:
+# EXAMPLE_2:
 There can be references to Sigla/Siglum, like:
-"Ps 23, 4"
+    "Ps 23, 4"
 
-You have to refer to Psalm 23, 4: "Chociażbym chodził ciemną doliną, zła się nie ulęknę, bo Ty jesteś ze mną. Twój kij i Twoja laska są tym, co mnie pociesza.".
-
+You have to replace "Ps 23, 4" Sigla with its content.: "Chociażbym chodził ciemną DOLINĄ, zła się nie ulęknę, bo Ty jesteś ze mną. Twój kij i Twoja laska są tym, co mnie pociesza.".
 For the question:
-"W jakie miejsce na przechadzkę wybrał się Janusz?"
-You should find and combine all useful information and answer:
-"Janusz wybrał się na przechadzkę do ciemnej doliny."
-
-EXAMPLE_3:
-Author can sometimes refer to some event in a following manner:
-"Następne zakupy zrobię za tydzień."
-...
-// and then a date:
-"22.06.2015"
-
-For the question:
-"Kiedy Donald zrobi następne zakupy? (format: YYYY-MM-DD)"
-You should find and combine all useful information and answer:
-"2015-06-29"
+    "W jakie miejsce na przechadzkę wybrał się Janusz?"
+You should find and combine all useful information and answer using the original term (in this case: DOLINA), not some adjectives like "głęboka", "niebezpieczna", etc.:
+    "Janusz wybrał się na przechadzkę do DOLINY."
 </pay_attention>
 
 <action_plan>
+# FIRST PART:
+- Read the whole text and find out fhe author's name.
+- Remember the author's name, and use it in the next steps.
+
+# SECOND PART:
 - Read the first question.
-- Read the text carefully. If you find any useful information regarding the question, remember it.
-- Keep going until you read the whole text.
+- Read the text carefully starting from the page 1. If you find any useful information regarding the question, remember it.
+- Read the page 2. If you find any useful information regarding the question, remember it.
+- ...
+- Read the last page. If you find any useful information regarding the question, remember it.
+- UNDER NO CIRCUMSTANCES STOP READING THE TEXT BEFORE YOU REACH THE LAST PAGE! EVEN IF YOU THINK THAT YOU HAVE FOUND ALL THE INFORMATION YOU NEED!
 - Ask yourself a question: "Do the informations I found are enough to answer the question?".
 - If the answer is yes, answer the question.
-- If the answer is no, read the text again, and find all missing information.
+- If the answer is no, leave it for now and move to the next question.
 - Repeat this process for the next question, until you answer all questions.
+
+# THIRD PART:
+- If there is any question that you couldn't answer, read other questions and answers that you've made and find connections between them. Then read the whole text again and answer this question.
 </action_plan>
 
 <reminder>

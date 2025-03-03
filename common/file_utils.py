@@ -304,7 +304,7 @@ def send_json(url: str, json_input) -> dict:
     return response.json()
 
 
-def pdf_to_text(pdf_path, output_txt):
+def pdf_to_text(pdf_path, output_txt, number_the_pages=False):
     # Open the PDF file in read-binary mode
     with open(pdf_path, 'rb') as pdf_file:
         # Create a PdfReader object instead of PdfFileReader
@@ -315,7 +315,11 @@ def pdf_to_text(pdf_path, output_txt):
 
         for page_num in range(len(pdf_reader.pages)):
             page = pdf_reader.pages[page_num]
+            if number_the_pages:
+                text += f"//=============== PAGE {page_num + 1} ===============//\n\n"
             text += page.extract_text()
+            if number_the_pages:
+                text += "\n\n"
 
     # Write the extracted text to a text file
     with open(output_txt, 'w', encoding='utf-8') as txt_file:

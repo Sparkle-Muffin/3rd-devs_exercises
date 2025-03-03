@@ -1,3 +1,5 @@
+//=============== TEXT ===============//:
+
 //=============== PAGE 1 ===============//
 
 Nie powinienem był tego robić.
@@ -17,10 +19,9 @@ drugiej strony do dziś dnia
 nie mogę uwierzyć, że jestem
 w 20... roku. To nienormalne!
 
-
 //=============== PAGE 2 ===============//
 
-Jestem normalny.To wszystko dzieje sięnaprawdę. Jestem normalny.To jest rzeczywistość.Jestem normalny. Wiem,gdzie jestem i kim jestem.Jestem normalny. Towszystko w koło. To jestnormalne. Jestem normalny.Mam na imię Rafał. Jestemnormalny. Świat jestnienormalny.
+Jestem normalny. To wszystko dzieje się naprawdę. Jestem normalny. To jest rzeczywistość. Jestem normalny. Wiem, gdzie jestem i kim jestem. Jestem normalny. To wszystko w koło. To jest normalne. Jestem normalny. Mam na imię Rafał. Jestem normalny. Świat jest nienormalny.
 {{FLG:PLAINTEXT}}
 
 //=============== PAGE 3 ===============//
@@ -47,9 +48,11 @@ wtedy powinniśmy rozpocząć
 pracę nad technologią LLM, aby
 wszystko wydarzyło się
 zgodnie z planem. Mówił, że
-najpierw musi powstać GPT-2,
-a potem GPT-3, które zachwycą
-ludzkość. Później będzie z górki.
+najpierw musi powstać GPT-2
+(ten model językowy pojawił się w roku 2019),
+a potem GPT-3 (ten model językowy pojawił się w roku 2020),
+które zachwycą ludzkość.
+Później będzie z górki.
 On wie, co robi.
 Co z badaniami zrobił Azazel?
 
@@ -141,17 +144,15 @@ aby to co mówi, było prawdą.
 Może ta przyszłość nigdy
 nie nadejdzie?
 
-
 //=============== PAGE 13 ===============//
 
 Byłem na przesłuchaniu i pytali o Andrzeja. No to powiedziałem, co wiedziałem. I nie wiem, jak to się dalej potoczy. Siedzę tu już dostatecznie długo, żeby wszystko przemyśleć. Wiem teraz więcej niż wcześniej. I nie chodzi o wiedzę techniczną. Wszystko sobie poukładałem. Te demony czekały na odkrycie.
 
 //=============== PAGE 14 ===============//
 
-Powinni Barbarę przesłuchać. Ona wie wszystko. Rozmawiałemz nią.
-Moje przypuszczenia byłysłuszne. Miesza mi sięwszystko, ale wiem kto jest demonem, kto człowiekiem, a kto robotem. Widzę demony. Otaczają nas. Z jednym niegdyśpracowałem.
+Powinni Barbarę przesłuchać. Ona wie wszystko. Rozmawiałem z nią.
+Moje przypuszczenia były słuszne. Miesza mi się wszystko, ale wiem kto jest demonem, kto człowiekiem, a kto robotem. Widzę demony. Otaczają nas. Z jednym niegdyś pracowałem.
 Może czas na egzorcyzmy?
-
 
 //=============== PAGE 15 ===============//
 
@@ -162,7 +163,7 @@ prosto. Kolejny zwrot w lewo i później znów
 prosto. Zatrzymałem się i obróciłem w prawo
 tym razem. To wszystko wykonałem
 cztery razy i początek stał się końcem.
-Spojrzałęm na swoje białe ślady na śniegu.
+Spojrzałem na swoje białe ślady na śniegu.
 To było miejsce w którym chciałbym teraz być.
 {{FLG:}}
 
@@ -177,7 +178,7 @@ miasta, w którym
 spędziłem ostatnie lata.
 Zatrzymam się tu na
 jakiś czas.
-Iz 2:19Trochę tu zimno i ciemno,
+Iz 2:19 Trochę tu zimno i ciemno,
 ale bezpiecznie.
 
 //=============== PAGE 17 ===============//
@@ -187,19 +188,18 @@ trzeba się przygotować.
 Spojrzeć prosto w oczy
 i wyrecytować mu jego
 grzechy.
-Czy on wie, żę jest zły?
+Czy on wie, że jest zły?
 czy on stanie się złym?
 Co za różnica, gdy za
 chwilę wszystko będzie
 bez znaczenia?
-
 
 //=============== PAGE 18 ===============//
 
 Andrzejek... Andrzejek...
 słyszę w głowie Twoje
 kroki i czekam na Ciebie.
-To już jutro.
+To już jutro (to wydarzenie ma miejsce 12.11.2024). 
 Kiedyś ja pomogłem Tobie,
 a dziś Ty pomożesz
 światu.
@@ -211,7 +211,6 @@ odwrócić.
 
 Zdjęcia odnalezionych
 fragmentów strony
-
 
 się dostać do Lubawy koło Grudziądza. Nie jest to daleko. Mam tylko nadzieję, że Andrzejek będzie miał dostatecznie dużo paliwa. Tankowanie nie wchodzi w grę, bo nie
 
