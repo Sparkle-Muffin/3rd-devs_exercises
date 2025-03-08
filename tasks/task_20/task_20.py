@@ -1,8 +1,11 @@
+import sys
 from pathlib import Path
+import os
+sys.path.insert(0, str(os.getcwd()))
+
 from common.file_utils import read_file_content, download_file, pdf_to_text
 from common.openai_utils import OpenaiClient
 from common.centrala_aidevs_utils import AidevsMessageHandler
-import os
 from dotenv import load_dotenv
 from pdf2image import convert_from_path
 from common.opencv_utils import split_text_blocks
@@ -29,6 +32,7 @@ def main():
     text_blocks_dir.mkdir(parents=True, exist_ok=True)
     text_blocks_prefix = text_blocks_dir / "text_block"
     notebook_with_dates_path = program_files_dir / "notebook_with_dates.txt"
+    notebook_with_sigla_path = program_files_dir / "notebook_with_sigla.txt"
 
 
     # 1. Download notebook and convert to plaintext
@@ -82,10 +86,23 @@ def main():
         f.write(response)
 
 
-    # 8. Ask OpenAI to answer the questions
-    prompt = read_file_content(prompts_dir / "answer_the_questions.txt")
-    questions = read_file_content(questions_path)
+    # 8. Ask OpenAI to expand biblical sigla
+    prompt = read_file_content(prompts_dir / "expand_biblical_sigla.txt")
     text_to_read = read_file_content(notebook_with_dates_path)
+    messages = [
+        {'role': 'system', 'content': prompt},
+        {'role': 'user', 'content': 
+         f"\n\n{text_to_read}"}
+    ]
+    response = openai_msg_handler.call_openai(messages)
+    with open(notebook_with_sigla_path, 'w', encoding='utf-8') as f:
+        f.write(response)
+
+
+    # 9. Ask OpenAI to prepare lists of answers
+    prompt = read_file_content(prompts_dir / "prepare_lists_of_answers.txt")
+    questions = read_file_content(questions_path)
+    text_to_read = read_file_content(notebook_with_sigla_path)
     messages = [
         {'role': 'system', 'content': prompt},
         {'role': 'user', 'content': 
@@ -93,11 +110,47 @@ def main():
          f"//=============== TEXT ===============//:\n\n{text_to_read}"}
     ]
     response = openai_msg_handler.call_openai(messages, response_format={"type": "json_object"})
-    answers = response["answers"]
+    possible_answers = response["answers"]
 
 
-    # 9. Send answers to Aidevs
-    aidevs_msg_handler.ask_centrala_aidevs(answers)
+    return_code = 1
+    answers = None
+    feedback = None
+    all_previous_answers = []
+    all_previous_feedbacks = []
+    counter = 0
+    while(return_code != 0):
+        # 10. Ask OpenAI to answer the questions
+        counter += 1
+        prompt = read_file_content(prompts_dir / "answer_the_questions.txt")
+        system_prompt = prompt
+        system_prompt += f"\n\n//=============== THIS IS THE {counter} PROMPT ===============//:\n\n"
+        if answers and feedback:
+            all_previous_answers.append(answers)
+            all_previous_feedbacks.append(feedback)
+            system_prompt += f"\n\n//=============== YOUR PREVIOUS ANSWERS ===============//:\n\n"
+            for i, answer in enumerate(all_previous_answers): 
+                system_prompt += f"//------------- From {i+1} prompt -------------//:\n\n"
+                system_prompt += f"{answer}\n\n"
+            system_prompt += f"\n\n//=============== FEEDBACK ===============//:\n\n"
+            for i, feedback in enumerate(all_previous_feedbacks):
+                system_prompt += f"//------------- From {i+1} prompt -------------//:\n\n"
+                system_prompt += f"{feedback}\n\n"
+        questions = read_file_content(questions_path)
+        messages = [
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': 
+             f"//=============== QUESTIONS ===============//:\n\n{questions}\n\n"
+             f"//=============== POSSIBLE ANSWERS ===============//:\n\n{possible_answers}"}
+        ]
+        response = openai_msg_handler.call_openai(messages=messages, response_format={"type": "json_object"})
+        answers = response["answers"]
+
+
+        # 11. Send answers to Aidevs
+        feedback = aidevs_msg_handler.ask_centrala_aidevs(answers)
+        return_code = feedback.get("code")
+        print(f"Return code: {return_code}")
 
 
 if __name__ == "__main__":
