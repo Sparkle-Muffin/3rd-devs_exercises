@@ -44,6 +44,7 @@ class OpenaiClient:
         images: Optional[List[str]] = None,
         model: str = "gpt-4o",
         response_format: Optional[Dict] = None,
+        reasoning_effort: Optional[str] = None,
         temperature: Optional[float] = None
     ) -> str:
         """Make an OpenAI API call with multiple messages and optional images.
@@ -70,7 +71,8 @@ class OpenaiClient:
             model=model,
             response_format=response_format,
             messages=formatted_messages,
-            temperature=temperature
+            temperature=temperature,
+            reasoning_effort=reasoning_effort
         )
 
         response = response.choices[0].message.content

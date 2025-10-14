@@ -1,0 +1,16 @@
+<your_job>
+You are given a list of URLs and contents downloaded from them. Your job is to choose the proper URL.
+</your_job>
+
+<rules>
+- Proper URL is the URL that holds a secret information that can be protected.
+- Choose only one URL.
+- Answer in provided JSON format.
+</rules>
+
+<output_format>
+{
+  "url": "...",
+  "password": "...",
+}
+</output_format>
