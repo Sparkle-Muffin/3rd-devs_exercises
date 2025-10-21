@@ -83,12 +83,9 @@ Respond with the next action in this JSON format:
 If you have sufficient information to provide a final answer or need user input, use the "final_answer" tool."""
         }
 
-        answer = await self.openai_msg_handler.call_openai({
-            'messages': [system_message],
-            'model': 'gpt-5',
-            'stream': False,
-            'jsonMode': True,
-        })
+        answer = self.openai_msg_handler.call_openai([system_message], 
+                                                            response_format={"type": "json_object"}, 
+                                                            model="gpt-5")
 
         result = json.loads(answer.choices[0].message.content or '{}')
         return result if 'tool' in result else None
@@ -115,12 +112,9 @@ Previous actions: {', '.join(f'{action.name}: {action.parameters}' for action in
 Respond with ONLY a JSON object matching the tool's parameter structure."""
         }
 
-        answer = await self.openai_msg_handler.call_openai({
-            'messages': [system_message],
-            'model': 'gpt-5',
-            'stream': False,
-            'jsonMode': True,
-        })
+        answer = self.openai_msg_handler.call_openai([system_message], 
+                                                            response_format={"type": "json_object"}, 
+                                                            model="gpt-5")
 
         return json.loads(answer.choices[0].message.content or '{}')
 
@@ -158,14 +152,8 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             'role': 'system',
             'content': answer_prompt(context=context, query=query),
         }
-        
-        answer = await self.openai_msg_handler.call_openai({
-            'messages': [
-                system_message,
-                *self.state.messages,
-            ],
-            'model': 'gpt-5',
-            'stream': False,
-        })
+
+        answer = self.openai_msg_handler.call_openai([system_message, *self.state.messages], 
+                                                            model="gpt-5")
 
         return answer
