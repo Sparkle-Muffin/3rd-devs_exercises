@@ -1,7 +1,13 @@
 from classes import State, Tool, ChatRequest, ChatResponse
 from pathlib import Path
 import os
+import sys
 from dotenv import load_dotenv
+
+# Add the parent directory to Python path so we can import the common module
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
+
 from agent import Agent
 from common.file_utils import read_file_content
 from fastapi import FastAPI, HTTPException

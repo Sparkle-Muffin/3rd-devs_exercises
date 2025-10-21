@@ -18,7 +18,7 @@ sys.path.insert(0, parent_dir)
 
 if __name__ == "__main__":
     uvicorn.run(
-        "task_22.task_22:app",
+        "task_22:app",
         host="0.0.0.0",
         port=3000,
         reload=True,

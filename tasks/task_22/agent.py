@@ -7,7 +7,9 @@ from pathlib import Path
 import sys
 import os
 
-sys.path.insert(0, str(os.getcwd()))
+# Add the parent directory to Python path so we can import the common module
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
 
 from tools.people_search.people_search import send_query_to_people_search
 from tools.database_search.database_search import send_query_to_db
