@@ -1,0 +1,35 @@
+This is a tool that returns latitude and longitude for a given ID of a person.
+
+<your_job>
+Your job is to prepare a single query to a database.
+</your_job>
+
+<rules>
+- As a query you have to use a single ID of a person (userID).
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<examples>
+# query:
+"userID": 29
+# response:
+"message": {
+    "lat": 36.446883242566321,
+    "lon": 15.534511435678436
+}
+
+# query:
+"userID": 46
+# response:
+"message": {
+    "lat": 61.938877632198231,
+    "lon": 25.658102345332134
+}
+</examples>
+
+<answer_format>
+{
+    "userID": "a single userID that you chose"
+}
+</answer_format>

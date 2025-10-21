@@ -1,0 +1,70 @@
+This is a tool that sends coordinates to a server, and returns a server response with a message and error code. If everything is correct, the server returns a flag (FLG).
+
+<your_job>
+Your job is to prepare a query to a server.
+</your_job>
+
+<rules>
+- As a query you have to use a combination of name and coordinates.
+- You can send coordinates of multiple people.
+- Make sure to round all coordinates to three decimal places.
+- Your answer is right only when the error code returned by the server equals "0".
+- When the server returns error code not equal to "0", read "message" carefully and correct yourself.
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<examples>
+# query:
+{
+    "answer": {
+        "ADAM": {
+            "lat": 12.345,
+            "lon": 65.431
+        },
+        "MONIKA": {
+            "lat": 19.433,
+            "lon": 12.123
+        }
+    }
+}
+# response:
+{
+    "code": -344,
+    "message": "Some of the coordinates are incorrect: ADAM, MONIKA"
+}
+
+# query:
+{
+    "answer": {
+        "ADAM": {
+            "lat": 24.287,
+            "lon": 53.581
+        },
+        "MONIKA": {
+            "lat": 42.257,
+            "lon": 75.250
+        }
+    }
+}
+# response:
+{
+    "code": 0,
+    "message": "{{FLG:SOMEFLAG}}"
+}
+</examples>
+
+<answer_format>
+{
+    "answer": {
+        "name": {
+            "lat": xx.xxx,
+            "lon": xx.xxx
+        },
+        "next-name": {
+            "lat": xx.xxx,
+            "lon": xx.xxx
+        }
+    }
+}
+</answer_format>

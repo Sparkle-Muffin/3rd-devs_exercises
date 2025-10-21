@@ -1,0 +1,28 @@
+This is a tool that returns names of people connected with a certain Polish city.
+
+<your_job>
+Your job is to prepare a single query to a database.
+</your_job>
+
+<rules>
+- As a query you have to use a single name of a Polish city in nominative singular without Polish diacritical marks.
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<examples>
+# query:
+"query": "KRAKOW"
+# response:
+"message": "ALEKSANDER JANINA ADAM"
+
+# query:
+"query": "WARSZAWA"
+# response:
+"message": "RAFAŁ ALEKSANDER ANDRZEJ"
+</examples>
+
+<answer_format>
+{
+    "query": "a single name of a Polish city that you chose"
+}
