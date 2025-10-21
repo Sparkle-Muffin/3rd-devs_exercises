@@ -1,17 +1,17 @@
-from classes import State, Tool, ChatRequest, ChatResponse
 from pathlib import Path
 import os
 import sys
-from dotenv import load_dotenv
 
-# Add the parent directory to Python path so we can import the common module
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
-
-from agent import Agent
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, parent_dir)
 from common.file_utils import read_file_content
+from classes import State, Tool, ChatRequest, ChatResponse
+from agent import Agent
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -77,6 +77,18 @@ state: State = State(
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
+        # Update state messages
+        if len(request.messages) == 1:
+            state.messages.extend([
+                msg for msg in request.messages
+                if msg.get('role') != 'system'
+            ])
+        else:
+            state.messages = [
+                msg for msg in request.messages
+                if msg.get('role') != 'system'
+            ]
+
         agent = Agent(task_name, task_path, state)
         
         for i in range(state.config["max_steps"]):

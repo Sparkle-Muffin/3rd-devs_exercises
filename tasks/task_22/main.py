@@ -1,19 +1,8 @@
-#!/usr/bin/env python3
-"""
-Main entry point for the Agent API.
-Run this file to start the FastAPI server.
-
-Usage:
-    python main.py
-"""
-
 import uvicorn
 import sys
 import os
 
-# Add the parent directory to Python path so we can import the agent module
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, parent_dir)
 
 if __name__ == "__main__":

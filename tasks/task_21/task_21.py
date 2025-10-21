@@ -27,7 +27,7 @@ def main():
 
 
     # # 1. Download conversations and questions
-    # conversations_raw_path = download_file(os.getenv("TASK_21_CONVERSATIONS_URL"), downloads_dir)
+    conversations_raw_path = download_file(os.getenv("TASK_21_CONVERSATIONS_URL"), downloads_dir)
     questions_path = download_file(os.getenv("TASK_21_QUESTIONS_URL"), downloads_dir)
     conversations_ordered_path = program_files_dir / "conversations_ordered.json"
     conversations_with_names_path = program_files_dir / "conversations_with_names.json"

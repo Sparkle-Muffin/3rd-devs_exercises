@@ -1,27 +1,25 @@
 import uuid
 import json
 from datetime import datetime
-from typing import Dict, Any, List, Optional
-from classes import State, Action
 from pathlib import Path
 import sys
 import os
 
-# Add the parent directory to Python path so we can import the common module
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
-
+from common.centrala_aidevs_utils import AidevsMessageHandler
+from common.openai_utils import OpenaiClient
+from typing import Dict, Any, Optional
+from classes import State, Action
 from tools.people_search.people_search import send_query_to_people_search
 from tools.database_search.database_search import send_query_to_db
 from tools.gps_search.gps_search import send_query_to_gps_search
-from common.centrala_aidevs_utils import AidevsMessageHandler
 from prompts.final_answer import answer_prompt
-from common.openai_utils import OpenaiClient
 
 
 class Agent:
     def __init__(self, task_name: str, task_path: Path, state: State):
-        self.openai_client = OpenaiClient(task_path)
+        self.openai_msg_handler = OpenaiClient(task_path)
         self.aidevs_msg_handler = AidevsMessageHandler(task_name, task_path)
         self.state = state
 
@@ -85,7 +83,7 @@ Respond with the next action in this JSON format:
 If you have sufficient information to provide a final answer or need user input, use the "final_answer" tool."""
         }
 
-        answer = await self.openai_service.completion({
+        answer = await self.openai_msg_handler.call_openai({
             'messages': [system_message],
             'model': 'gpt-5',
             'stream': False,
@@ -117,7 +115,7 @@ Previous actions: {', '.join(f'{action.name}: {action.parameters}' for action in
 Respond with ONLY a JSON object matching the tool's parameter structure."""
         }
 
-        answer = await self.openai_service.completion({
+        answer = await self.openai_msg_handler.call_openai({
             'messages': [system_message],
             'model': 'gpt-5',
             'stream': False,
@@ -161,7 +159,7 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             'content': answer_prompt(context=context, query=query),
         }
         
-        answer = await self.openai_client.completion({
+        answer = await self.openai_msg_handler.call_openai({
             'messages': [
                 system_message,
                 *self.state.messages,

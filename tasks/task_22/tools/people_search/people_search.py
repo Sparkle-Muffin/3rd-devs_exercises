@@ -2,10 +2,8 @@ from os import getenv
 import sys
 import os
 
-# Add the parent directory to Python path so we can import the common module
 parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, parent_dir)
-
 from common.file_utils import send_json
 
 
