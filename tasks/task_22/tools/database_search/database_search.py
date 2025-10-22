@@ -16,5 +16,5 @@ def send_query_to_db(query: str) -> dict:
     }
 
     # Send database query
-    db_response = send_json(getenv("TASK_22_DATABASE_API"), db_query)
+    db_response = send_json(getenv("TASK_22_DB_API"), db_query)
     return db_response

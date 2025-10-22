@@ -1,4 +1,4 @@
-This is a tool that enables sending queries to a MySQL database. The database contains 4 tables:
+This is a tool that enables sending queries to a MariaDB database. The database contains 4 tables:
 - connections
 - correct_order
 - datacenters
@@ -9,7 +9,7 @@ Your job is to prepare a single query to a database.
 </your_job>
 
 <rules>
-- You have to use proper MySQL syntax.
+- You have to use proper MariaDB syntax.
 - Don't add any comments or formatting.
 - Answer in JSON format provided.
 </rules>

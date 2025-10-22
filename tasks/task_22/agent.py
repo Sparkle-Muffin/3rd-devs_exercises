@@ -32,11 +32,7 @@ class Agent:
             for action in self.state.actions:
                 action_str = f'<action name="{action.name}" params="{action.parameters}" description="{action.description}">\n'
                 if action.results:
-                    result_strings = []
-                    for result in action.results:
-                        result_str = f'<result name="{result.metadata.get("name", "Unknown")}" url="{result.metadata.get("urls", [None])[0] or "no-url"}">\n{result.text}\n</result>'
-                        result_strings.append(result_str)
-                    action_str += '\n'.join(result_strings)
+                    action_str += str(action.results)
                 else:
                     action_str += 'No results for this action'
                 action_str += '\n</action>'
@@ -124,13 +120,13 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
         elif tool == 'database_search':
             results = send_query_to_db(parameters['query'])
         elif tool == 'gps_search':
-            results = send_query_to_gps_search(parameters['query'])
+            results = send_query_to_gps_search(parameters['userID'])
         elif tool == 'get_flag':
-            results = self.aidevs_msg_handler.ask_centrala_aidevs(parameters['query'])
+            results = self.aidevs_msg_handler.ask_centrala_aidevs(parameters['answer'])
         else:
             raise ValueError(f'Tool {tool} not found')
 
-        self.state.actions.append(Action({
+        self.state.actions.append(Action(**{
             'uuid': str(uuid.uuid4()),
             'name': tool,
             'parameters': json.dumps(parameters),
