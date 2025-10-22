@@ -120,7 +120,7 @@ async def chat(request: ChatRequest):
         # Generate the answer
         answer = await agent.generate_answer()
         
-        state.messages.append(answer.choices[0].message)
+        state.messages.append(answer)
         
         return ChatResponse(
             choices=[choice.model_dump() for choice in answer.choices],

@@ -87,8 +87,7 @@ If you have sufficient information to provide a final answer or need user input,
                                                             response_format={"type": "json_object"}, 
                                                             model="gpt-5")
 
-        result = json.loads(answer.choices[0].message.content or '{}')
-        return result if 'tool' in result else None
+        return answer if 'tool' in answer else None
 
     async def describe(self, tool: str, query: str) -> Dict[str, Any]:
         """Generate specific parameters for a tool."""
@@ -116,18 +115,18 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
                                                             response_format={"type": "json_object"}, 
                                                             model="gpt-5")
 
-        return json.loads(answer.choices[0].message.content or '{}')
+        return answer
 
     async def use_tool(self, tool: str, parameters: Dict[str, Any]) -> None:
         """Use a specific tool with given parameters."""
         if tool == 'people_search':
-            results = await send_query_to_people_search(parameters['query'])
+            results = send_query_to_people_search(parameters['query'])
         elif tool == 'database_search':
-            results = await send_query_to_db(parameters['query'])
+            results = send_query_to_db(parameters['query'])
         elif tool == 'gps_search':
-            results = await send_query_to_gps_search(parameters['query'])
+            results = send_query_to_gps_search(parameters['query'])
         elif tool == 'get_flag':
-            results = await self.aidevs_msg_handler.ask_centrala_aidevs(parameters['query'])
+            results = self.aidevs_msg_handler.ask_centrala_aidevs(parameters['query'])
         else:
             raise ValueError(f'Tool {tool} not found')
 
@@ -136,7 +135,7 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             'name': tool,
             'parameters': json.dumps(parameters),
             'description': f'Search results & website contents for the query {parameters["query"]}',
-            'results': results
+            'results': json.dumps(results)
         }))
 
     async def generate_answer(self) -> Dict[str, Any]:
