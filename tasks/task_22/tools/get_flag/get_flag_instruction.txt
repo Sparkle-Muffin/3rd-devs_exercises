@@ -7,6 +7,7 @@ Your job is to prepare a query to a server.
 <rules>
 - As a query you have to use a combination of name and coordinates.
 - You can send coordinates of multiple people.
+- You have to use a person's name, not ID: e.g. Andrzej, not 13.
 - Coordinates must be numbers, not strings.
 - Coordinates may differ in decimal numbers.
 - Your answer is right only when the error code returned by the server equals "0".

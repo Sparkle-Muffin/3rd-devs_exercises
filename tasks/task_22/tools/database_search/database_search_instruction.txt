@@ -12,10 +12,7 @@ Your job is to prepare a single query to a database.
 
 <rules>
 - You have to use proper MariaDB syntax.
-- You have to use queries that retrieve only needed content. For example, if you want to retrieve information about ANDRZEJ use:
-    "select * from users where username = 'ANDRZEJ'"
-  and not:
-    "select * from users"
+- Avoid using queries that can retrieve a big load of data! For example if you want to query a database about certain person, use their name, DO NOT retrieve information about all people in the database!
 - Don't add any comments or formatting.
 - Answer in JSON format provided.
 </rules>
