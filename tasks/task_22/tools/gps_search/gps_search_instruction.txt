@@ -15,7 +15,7 @@ Your job is to prepare a single query to a database.
 "userID": 29
 # response:
 "message": {
-    "lat": 36.446883242566321,
+    "lat": 36.4466321,
     "lon": 15.534511435678436
 }
 
@@ -23,8 +23,8 @@ Your job is to prepare a single query to a database.
 "userID": 46
 # response:
 "message": {
-    "lat": 61.938877632198231,
-    "lon": 25.658102345332134
+    "lat": 61.9388
+    "lon": 25.6581
 }
 </examples>
 

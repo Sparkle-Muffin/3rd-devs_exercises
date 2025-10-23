@@ -7,6 +7,8 @@ Your job is to prepare a query to a server.
 <rules>
 - As a query you have to use a combination of name and coordinates.
 - You can send coordinates of multiple people.
+- Coordinates must be numbers, not strings.
+- Coordinates may differ in decimal numbers.
 - Your answer is right only when the error code returned by the server equals "0".
 - When the server returns error code not equal to "0", read "message" carefully and correct yourself.
 - Don't add any comments or formatting.
@@ -19,11 +21,11 @@ Your job is to prepare a query to a server.
     "answer": {
         "ADAM": {
             "lat": 36.446883242566321,
-            "lon": 15.534511435678436
+            "lon": 15.5345114
         },
         "MONIKA": {
-            "lat": 61.938877632198231,
-            "lon": 25.658102345332134
+            "lat": 61.938,
+            "lon": 25.658
         }
     }
 }
@@ -37,8 +39,8 @@ Your job is to prepare a query to a server.
 {
     "answer": {
         "ADAM": {
-            "lat": 72.948699329834791,
-            "lon": 43.085418461881248
+            "lat": 72.94869,
+            "lon": 43.0854184
         },
         "MONIKA": {
             "lat": 69.321387328273412,
@@ -57,12 +59,12 @@ Your job is to prepare a query to a server.
 {
     "answer": {
         "name": {
-            "lat": xx.xxxxxxxxxxxxxxx,
-            "lon": xx.xxxxxxxxxxxxxxx
+            "lat": lat coordinate,
+            "lon": lon coordinate
         },
         "next-name": {
-            "lat": xx.xxxxxxxxxxxxxxx,
-            "lon": xx.xxxxxxxxxxxxxxx
+            "lat": lat coordinate,
+            "lon": lon coordinate
         }
     }
 }
