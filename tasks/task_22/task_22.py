@@ -46,7 +46,7 @@ state: State = State(
     tools=[
         Tool(
             name="people_search",
-            description="This is a tool that returns names of people connected with a certain Polish city.",
+            description="This is a tool that returns names of people connected with a certain Polish city. This it the ONLY tool that connects people with cities.",
             instruction=people_search_instruction,
         ),
         Tool(

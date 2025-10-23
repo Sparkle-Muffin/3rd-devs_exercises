@@ -4,6 +4,8 @@ This is a tool that enables sending queries to a MariaDB database. The database 
 - datacenters
 - users
 
+NOTE: This database DOES NOT provide any information about people-cities connections!
+
 <your_job>
 Your job is to prepare a single query to a database.
 </your_job>
