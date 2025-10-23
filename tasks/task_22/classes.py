@@ -12,7 +12,7 @@ class ChatResponse(BaseModel):
 class Action(BaseModel):
     uuid: str
     name: str
-    parameters: str
+    query: str
     results: str
 
 class Tool(BaseModel):

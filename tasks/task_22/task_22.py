@@ -99,18 +99,18 @@ async def chat(request: ChatRequest):
 
             print('Thinking...', next_move.get('_reasoning'))
             print(f"Tool: {next_move.get('tool')}")
-            print(f"Query: {next_move.get('query')}")
+            print(f"Task description: {next_move.get('task_description')}")
                             
             # Set the active step
             state.config['active_step'] = {
                 'name': next_move['tool'],
-                'query': next_move['query']
+                'task_description': next_move['task_description']
             }
             # If there's no tool to use, we're done
             if not next_move.get('tool') or next_move.get('tool') == 'final_answer':
                 break
             # Generate the parameters for the tool
-            parameters = await agent.describe(next_move['tool'], next_move['query'])
+            parameters = await agent.describe(next_move['tool'], next_move['task_description'])
             # Use the tool
             await agent.use_tool(next_move['tool'], parameters)
             # Increase the step counter

@@ -30,11 +30,7 @@ class Agent:
         if self.state.actions:
             action_strings = []
             for action in self.state.actions:
-                action_str = f'<action name="{action.name}" params="{action.parameters}">\n'
-                if action.results:
-                    action_str += str(action.results)
-                else:
-                    action_str += 'No results for this action'
+                action_str = f'<action name="{action.name}" query="{action.query}" results="{action.results}">\n'
                 action_str += '\n</action>'
                 action_strings.append(action_str)
             actions_taken = '\n'.join(action_strings)
@@ -73,7 +69,7 @@ Respond with the next action in this JSON format:
 {{
     "_reasoning": "Brief explanation of why this action is the most appropriate next step",
     "tool": "tool_name",
-    "query": "Precise description of what needs to be done, including any necessary context"
+    "task_description": "Precise description of what needs to be done by the tool, including any necessary context"
 }}
 
 If you have sufficient information to provide a final answer or need user input, use the "final_answer" tool."""
@@ -85,7 +81,7 @@ If you have sufficient information to provide a final answer or need user input,
 
         return answer if 'tool' in answer else None
 
-    async def describe(self, tool: str, query: str) -> Dict[str, Any]:
+    async def describe(self, tool: str, task_description: str) -> Dict[str, Any]:
         """Generate specific parameters for a tool."""
         tool_info = next((t for t in self.state.tools if t.name == tool), None)
         if not tool_info:
@@ -99,9 +95,9 @@ If you have sufficient information to provide a final answer or need user input,
 Current date: {datetime.now().isoformat()}
 Tool description: {tool_info.description}
 Tool instructions: {tool_info.instruction}
-Original query: {query}
+Original task description: {task_description}
 Last message: "{self.state.messages[-1].get('content', '') if self.state.messages else ''}"
-Previous actions: {', '.join(f'{action.name}: {action.parameters}' for action in self.state.actions)}
+Previous actions: {', '.join(f'{action.name}: {action.query}' for action in self.state.actions)}
 </context>
 
 Respond with ONLY a JSON object matching the tool's parameter structure."""
@@ -129,7 +125,7 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
         self.state.actions.append(Action(**{
             'uuid': str(uuid.uuid4()),
             'name': tool,
-            'parameters': json.dumps(parameters),
+            'query': json.dumps(parameters),
             'results': json.dumps(results)
         }))
 
