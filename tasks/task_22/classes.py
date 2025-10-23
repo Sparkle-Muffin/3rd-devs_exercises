@@ -13,7 +13,6 @@ class Action(BaseModel):
     uuid: str
     name: str
     parameters: str
-    description: str
     results: str
 
 class Tool(BaseModel):

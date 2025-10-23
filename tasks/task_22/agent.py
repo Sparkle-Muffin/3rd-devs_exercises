@@ -30,7 +30,7 @@ class Agent:
         if self.state.actions:
             action_strings = []
             for action in self.state.actions:
-                action_str = f'<action name="{action.name}" params="{action.parameters}" description="{action.description}">\n'
+                action_str = f'<action name="{action.name}" params="{action.parameters}">\n'
                 if action.results:
                     action_str += str(action.results)
                 else:
@@ -130,7 +130,6 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             'uuid': str(uuid.uuid4()),
             'name': tool,
             'parameters': json.dumps(parameters),
-            'description': f'Search results & website contents for the query {parameters["query"]}',
             'results': json.dumps(results)
         }))
 

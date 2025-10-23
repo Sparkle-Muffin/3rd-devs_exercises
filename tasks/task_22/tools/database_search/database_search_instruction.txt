@@ -10,11 +10,16 @@ Your job is to prepare a single query to a database.
 
 <rules>
 - You have to use proper MariaDB syntax.
+- You have to use queries that retrieve only needed content. For example, if you want to retrieve information about ANDRZEJ use:
+    "select * from users where username = 'ANDRZEJ'"
+  and not:
+    "select * from users"
 - Don't add any comments or formatting.
 - Answer in JSON format provided.
 </rules>
 
 <examples>
+*NOTE: Below are actual queries and DB responses. 
 "query": "show tables"
 "reply": [
     {
@@ -63,7 +68,7 @@ Your job is to prepare a single query to a database.
     }
 ]
 
-"query": "select * from users where username = 'andrzej'"
+"query": "select * from users where username = 'ANDRZEJ'"
 "reply": [
     {
         "id": "84",

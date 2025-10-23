@@ -11,9 +11,13 @@ load_dotenv()  # Load environment variables from a .env file if present
 class OpenaiClient:
     def __init__(self, base_dir):
         self.client = OpenAI()
-        # Define response directory
+
+        # Define query and response directories
+        self.query_dir = base_dir / "openai_queries"
         self.response_dir = base_dir / "openai_responses"
+
         # Ensure directory exists
+        self.query_dir.mkdir(parents=True, exist_ok=True)
         self.response_dir.mkdir(parents=True, exist_ok=True)
 
     def _encode_image(self, image_path: str) -> str:
@@ -66,7 +70,7 @@ class OpenaiClient:
             if msg['role'] == 'user' and images:
                 content.extend(self._create_image_message(images))
             formatted_messages.append({"role": msg['role'], "content": content})
-    
+   
         response = self.client.chat.completions.create(
             model=model,
             response_format=response_format,
@@ -77,8 +81,11 @@ class OpenaiClient:
 
         response = response.choices[0].message.content
         print(response)
-        file_number = self._get_next_file_number(self.response_dir)
+        file_number = self._get_next_file_number(self.query_dir)
+        query_path = self.query_dir / f"{file_number}_openai_query.json"
         response_path = self.response_dir / f"{file_number}_openai_response.json"
+
+        save_json(formatted_messages, query_path)
 
         if response_format:
             if response_format["type"] == "json_object":
