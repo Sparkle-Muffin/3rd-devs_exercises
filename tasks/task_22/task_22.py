@@ -7,7 +7,7 @@ sys.path.insert(0, parent_dir)
 parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, parent_dir)
 from common.file_utils import read_file_content
-from classes import State, Tool, ChatRequest, ChatResponse
+from classes import State, Tool, ChatRequest
 from agent import Agent
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -74,7 +74,7 @@ state: State = State(
 )
 
 
-@app.post("/api/chat", response_model=ChatResponse)
+@app.post("/api/chat")
 async def chat(request: ChatRequest):
     try:
         # Update state messages
@@ -122,10 +122,7 @@ async def chat(request: ChatRequest):
         
         state.messages.append(answer)
         
-        return ChatResponse(
-            choices=[choice.model_dump() for choice in answer.choices],
-            usage=answer.usage.model_dump() if answer.usage else None
-        )
+        return answer
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
