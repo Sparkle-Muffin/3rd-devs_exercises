@@ -1,0 +1,14 @@
+{
+    "question_1": {
+        "question": "Czego zakazano w laboratorium w celu podniesienia poziomu bezpieczeństwa?",
+        "answer": "W celu podniesienia poziomu bezpieczeństwa w laboratorium zakazano wnoszenia napojów i posiłków do pomieszczenia z komorą temporalną."
+    },
+    "question_2": {
+        "question": "Rozwiń skrót BNW-01",
+        "answer": "Skrót BNW-01 oznacza \"Brave New World\", czyli Nowy Wspaniały Świat."
+    },
+    "question_3": {
+        "question": "Ile bitów danych przesłano w ramach eksperymentu?",
+        "answer": "W ramach eksperymentu przesłano 128 bitów danych."
+    }
+}

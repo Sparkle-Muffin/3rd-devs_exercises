@@ -1,0 +1,33 @@
+<objective>
+Answer the questions from a file.
+</objective>
+
+<rules>
+- Open the file containing questions: @tasks/task_23/program_files/questions_1.json
+- Go to this website and read its contents: https://centrala.ag3nts.org/dane/arxiv-draft.html
+- Answer the questions based on informations from the website.
+- Answer the questions in Polish.
+- Answer each question in one sentence.
+- Answer in json format provided below.
+- Save your answer as a new file (create this file): @tasks/task_23/program_files/questions_and_answers_1.json
+- DO NOT modify the original file.
+- Don't add any comments or formatting.
+</rules>
+
+<answer_format>
+{
+    "question_1": {
+        "question": "question 1 content",
+        "answer": "question 1 answer"
+    },
+    "question_2": {
+        "question": "question 2 content",
+        "answer": "question 2 answer"
+    },
+    ...
+    "question_n": {
+        "question": "question n content",
+        "answer": "question n answer"
+    }
+}
+</answer_format>

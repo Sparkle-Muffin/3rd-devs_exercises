@@ -1,0 +1,22 @@
+{
+    "question_1": {
+        "question": "Kto jest autorem \"Zbrodni i kary\"?",
+        "answer": "Autorem \"Zbrodni i kary\" jest Fiodor Dostojewski."
+    },
+    "question_2": {
+        "question": "Kiedy podpisano konstytucję 3 maja?",
+        "answer": "Konstytucję 3 maja podpisano w 1791 roku."
+    },
+    "question_3": {
+        "question": "Data bitwy pod Grunwaldem",
+        "answer": "Bitwa pod Grunwaldem odbyła się 15 lipca 1410 roku."
+    },
+    "question_4": {
+        "question": "Jak nazywa się najstarszy hymn Polski?",
+        "answer": "Najstarszy hymn Polski to \"Bogurodzica\"."
+    },
+    "question_5": {
+        "question": "Z jakim miastem kojarzy się Mikołaj Kopernik?",
+        "answer": "Mikołaj Kopernik kojarzy się z Toruniem."
+    }
+}
