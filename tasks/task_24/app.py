@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from contextlib import asynccontextmanager
 from pyngrok import conf, ngrok
+import time
 sys.path.insert(0, str(os.getcwd()))
 from common.centrala_aidevs_utils import AidevsMessageHandler
 from dotenv import load_dotenv
@@ -25,7 +26,6 @@ def run_ngrok():
     global ngrok_tunnel_url, _ngrok_tunnel
     port = int(os.getenv("APP_PORT", "8666"))
     try:
-        # _ngrok_tunnel = ngrok.connect(port, "http", bind_tls=True)
         _ngrok_tunnel = ngrok.connect(port, "http")
         ngrok_tunnel_url = _ngrok_tunnel.public_url
         os.environ["NGROK_TUNNEL_URL"] = ngrok_tunnel_url
@@ -55,7 +55,7 @@ def send_my_api_to_centrala():
 async def lifespan(_: FastAPI):
     try:
         run_ngrok()
-        # send_my_api_to_centrala()
+        send_my_api_to_centrala()
         yield
     finally:
         stop_ngrok()
@@ -78,7 +78,7 @@ app.add_middleware(
 )
 
 class Request(BaseModel):
-    Dict[str, Any]
+    question: str
 
 class Response(BaseModel):
     answer: str
@@ -98,8 +98,7 @@ async def root():
 
 # Create new item
 @app.post("/", response_model=Response, status_code=200)
-# async def handle_request(request: Request):
-async def handle_request(request: Dict[str, Any]):
+async def handle_request(request: Request):
     """Response endpoint"""
     print(request)
     return Response(answer="Hello, World!")
