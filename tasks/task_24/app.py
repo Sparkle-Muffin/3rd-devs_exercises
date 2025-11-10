@@ -78,7 +78,7 @@ app.add_middleware(
 )
 
 class Request(BaseModel):
-    message: str
+    Dict[str, Any]
 
 class Response(BaseModel):
     answer: str
@@ -98,7 +98,8 @@ async def root():
 
 # Create new item
 @app.post("/", response_model=Response, status_code=200)
-async def handle_request(request: Request):
+# async def handle_request(request: Request):
+async def handle_request(request: Dict[str, Any]):
     """Response endpoint"""
     print(request)
     return Response(answer="Hello, World!")
