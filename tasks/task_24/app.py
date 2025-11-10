@@ -5,9 +5,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 from pyngrok import conf, ngrok
 import time
+import asyncio
 sys.path.insert(0, str(os.getcwd()))
 from common.centrala_aidevs_utils import AidevsMessageHandler
 from dotenv import load_dotenv
@@ -20,6 +21,7 @@ aidevs_msg_handler = AidevsMessageHandler(task_name, task_path)
 
 ngrok_tunnel_url: Optional[str] = None
 _ngrok_tunnel = None
+_announce_task: Optional[asyncio.Task] = None
 
 
 def run_ngrok():
@@ -51,13 +53,27 @@ def send_my_api_to_centrala():
     centrala_response = aidevs_msg_handler.ask_centrala_aidevs(message)
 
 
+async def _notify_centrala_when_ready(delay: float = 0.5):
+    """Wait for the server to accept connections before notifying centrala."""
+    await asyncio.sleep(delay)
+    if ngrok_tunnel_url:
+        # Run the synchronous HTTP request in a thread pool to avoid blocking the event loop
+        await asyncio.to_thread(send_my_api_to_centrala)
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    global _announce_task
     try:
         run_ngrok()
-        send_my_api_to_centrala()
+        _announce_task = asyncio.create_task(_notify_centrala_when_ready())
         yield
     finally:
+        if _announce_task:
+            _announce_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await _announce_task
+            _announce_task = None
         stop_ngrok()
 
 # Create FastAPI app instance
@@ -76,6 +92,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class Request(BaseModel):
     question: str
