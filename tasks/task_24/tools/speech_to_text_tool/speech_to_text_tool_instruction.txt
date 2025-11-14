@@ -1,0 +1,17 @@
+Use this tool to transcript an audio file to text. File has to be downloaded first using file_downloader tool. As a result, this tool provides a transcripted file in a text string form.
+
+<your_job>
+Your job is to provide a path to an audio file.
+</your_job>
+
+<rules>
+- As an answer you have to provide a path to an audio file.
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<answer_format>
+{
+    "file_path": "file path"
+}
+</answer_format>

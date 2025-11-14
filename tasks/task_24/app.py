@@ -3,22 +3,31 @@ import sys
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+from classes import Request, Response, State, Tool
+from typing import Optional
 from contextlib import asynccontextmanager, suppress
-from pyngrok import conf, ngrok
-import time
+from pyngrok import ngrok
 import asyncio
 sys.path.insert(0, str(os.getcwd()))
+from common.file_utils import read_file_content
 from common.centrala_aidevs_utils import AidevsMessageHandler
+from agent import Agent
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Initialize directories
 task_name = os.getenv("TASK_24_TASK_NAME")
 task_path = Path(__file__).parent
-aidevs_msg_handler = AidevsMessageHandler(task_name, task_path)
+tools_dir = task_path / "tools"
+prompts_dir = task_path / "prompts"
+downloads_dir = task_path / "downloads"
+downloads_dir.mkdir(parents=True, exist_ok=True)
+program_files_dir = task_path / "program_files"
+program_files_dir.mkdir(parents=True, exist_ok=True)
 
+# Initialize variables
+aidevs_msg_handler = AidevsMessageHandler(task_name, task_path)
 ngrok_tunnel_url: Optional[str] = None
 _ngrok_tunnel = None
 _announce_task: Optional[asyncio.Task] = None
@@ -50,7 +59,7 @@ def stop_ngrok():
 
 def send_my_api_to_centrala():
     message = ngrok_tunnel_url
-    centrala_response = aidevs_msg_handler.ask_centrala_aidevs(message)
+    aidevs_msg_handler.ask_centrala_aidevs(message)
 
 
 async def _notify_centrala_when_ready(delay: float = 0.5):
@@ -94,11 +103,46 @@ app.add_middleware(
 )
 
 
-class Request(BaseModel):
-    question: str
+file_downloader_instruction = read_file_content(tools_dir / "file_downloader/file_downloader_instruction.txt")
+speech_to_text_tool_instruction = read_file_content(tools_dir / "speech_to_text_tool/speech_to_text_tool_instruction.txt")
+answer_to_server_instruction = read_file_content(tools_dir / "answer_to_server/answer_to_server_instruction.txt")
+return_flag_instruction = read_file_content(tools_dir / "return_flag/return_flag_instruction.txt")
 
-class Response(BaseModel):
-    answer: str
+# Initialize state
+state: State = State(
+    config={
+        'max_steps': 20,
+        'current_step': 0,
+        'active_step': None
+    },
+    messages=[],
+    tools=[
+        Tool(
+            name="file_downloader",
+            description="Use this tool to download files from the Internet. As a result, this tool provides a local path to a downloaded file.",
+            instruction=file_downloader_instruction,
+        ),
+        Tool(
+            name="speech_to_text_tool",
+            description="Use this tool to transcript an audio file to text. File has to be downloaded first using file_downloader tool. As a result, this tool provides a transcripted file in a text string form.",
+            instruction=speech_to_text_tool_instruction,
+        ),
+        Tool(
+            name="answer_to_server",
+            description="Use this tool to send the answer to the server.",
+            instruction=answer_to_server_instruction,
+        ),
+        Tool(
+            name="return_flag",
+            description="Only use this tool once you have completed all tasks and captured the flag.",
+            instruction=return_flag_instruction,
+        ),
+    ],
+    actions=[],
+)
+
+
+agent = Agent(task_name, task_path, downloads_dir, program_files_dir, state)
 
 
 # Root endpoint
@@ -116,7 +160,42 @@ async def root():
 # Create new item
 @app.post("/", response_model=Response, status_code=200)
 async def handle_request(request: Request):
-    """Response endpoint"""
-    print(request)
-    return Response(answer="Hello, World!")
+    try:
+        # Update state questions
+        state.questions.append(request.question)
+        
+        for i in range(state.config["max_steps"]):
+            # Make a plan
+            next_move = await agent.plan()
+
+            print('Thinking...', next_move.get('_reasoning'))
+            print(f"Tool: {next_move.get('tool')}")
+            print(f"Task description: {next_move.get('task_description')}")
+                            
+            # Set the active step
+            state.config['active_step'] = {
+                'name': next_move['tool'],
+                'task_description': next_move['task_description']
+            }
+            # Generate the parameters for the tool
+            parameters = await agent.describe(next_move['tool'], next_move['task_description'])
+            # If there's no tool to use, we're done
+            if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
+                break
+            # Use the tool
+            await agent.use_tool(next_move['tool'], parameters)
+            # Increase the step counter
+            state.config['current_step'] += 1
+
+
+        answer = Response(answer=parameters)
+        state.answers.append(answer.answer)
+        
+        if next_move.get('tool') == 'answer_to_server':
+            return answer
+        else:
+            return 0
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 

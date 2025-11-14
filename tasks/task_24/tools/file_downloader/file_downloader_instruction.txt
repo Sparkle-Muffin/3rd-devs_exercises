@@ -1,0 +1,17 @@
+Use this tool to download files from the Internet. As a result, this tool provides a local path to a downloaded file.
+
+<your_job>
+Your job is to provide a file URL.
+</your_job>
+
+<rules>
+- As an answer you have to provide a file URL.
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<answer_format>
+{
+    "file_url": "file URL"
+}
+</answer_format>

@@ -1,0 +1,17 @@
+Use this tool to send the answer to the server.
+
+<your_job>
+Your job is to provide an answer to the question from the server.
+</your_job>
+
+<rules>
+- Answer in the same language as the question.
+- Don't add any comments or formatting.
+- Answer in JSON format provided.
+</rules>
+
+<answer_format>
+{
+    "answer": "answer to the question"
+}
+</answer_format>
