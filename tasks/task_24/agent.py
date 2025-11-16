@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import sys
 import os
+import asyncio
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
 from common.gemini_utils import GeminiCLIClient
@@ -28,7 +29,7 @@ class Agent:
         if self.state.actions:
             action_strings = []
             for action in self.state.actions:
-                action_str = f'<action name="{action.name}" query="{action.query}" results="{action.results}">\n'
+                action_str = f'<action name="{action.name}" query="{action.query}" result="{action.result}">\n'
                 action_str += '\n</action>'
                 action_strings.append(action_str)
             actions_taken = '\n'.join(action_strings)
@@ -58,7 +59,7 @@ Determine the single most effective next action based on the current context and
 
 <context>
     <current_date>Current date: {datetime.now().isoformat()}</current_date>
-    <last_question>Last question: "{self.state.questions[-1] if self.state.question else 'No questions yet'}"</last_question>
+    <last_question>Last question: "{self.state.questions[-1] if self.state.questions else 'No questions yet'}"</last_question>
     <available_tools>Available tools: {', '.join(f"{tool.name}: {tool.description}" for tool in self.state.tools) if self.state.tools else 'No tools available'}</available_tools>
     <actions_taken>Actions taken: {actions_taken}</actions_taken>
 </context>
@@ -73,7 +74,11 @@ Respond with the next action in this JSON format:
 If you have finally completed all the tasks and captured the flag, use the "return_flag" tool."""
         }
 
-        answer = self.gemini_msg_handler.call_gemini([system_message], output_format="json")
+        answer = await self.gemini_msg_handler.call_gemini(
+            messages=[system_message],
+            yolo=True,
+            output_format="json"
+        )
 
         return answer if 'tool' in answer else None
 
@@ -99,18 +104,49 @@ Previous actions: {', '.join(f'{action.name}: {action.query}' for action in self
 Respond with ONLY a JSON object matching the tool's parameter structure."""
         }
 
-        answer = self.openai_msg_handler.call_openai([system_message], 
-                                                            response_format={"type": "json_object"}, 
-                                                            model="gpt-5")
-
+        answer = await self.gemini_msg_handler.call_gemini(
+            messages=[system_message],
+            yolo=True,
+            output_format="json"
+        )
         return answer
+
+    async def answer_the_question(self) -> None:
+        """Answer the question."""
+        system_message = {
+            'role': 'system',
+            'content': f"""Answer the question.
+
+        Question: "{self.state.questions[-1] if self.state.questions else ''}"
+        Previous actions: {', '.join(f'{action.name}: {action.query}, result: {action.result}' for action in self.state.actions)}
+
+        Respond with ONLY a JSON object matching the following structure:
+        <answer_format>
+        {
+            "answer": "answer to the question"
+        }
+        """
+        }
+
+        answer = await self.gemini_msg_handler.call_gemini(
+            messages=[system_message],
+            yolo=True,
+            output_format="json"
+        )
+        
+        self.state.actions.append(Action(**{
+            'uuid': str(uuid.uuid4()),
+            'name': "Answered without using any tool",
+            'query': self.state.questions[-1],
+            'result': answer.get('answer')
+        }))
 
     async def use_tool(self, tool: str, parameters: Dict[str, Any]) -> None:
         """Use a specific tool with given parameters."""
         if tool == 'file_downloader':
-            results = download_file_tool(parameters['file_url'], self.downloads_dir)
+            result = await asyncio.to_thread(download_file_tool, parameters['file_url'], self.downloads_dir)
         elif tool == 'speech_to_text_tool':
-            results = speech_to_text_tool(parameters['file_path'], self.program_files_dir)
+            result = await asyncio.to_thread(speech_to_text_tool, parameters['file_path'], self.program_files_dir)
         else:
             raise ValueError(f'Tool {tool} not found')
 
@@ -118,5 +154,5 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             'uuid': str(uuid.uuid4()),
             'name': tool,
             'query': json.dumps(parameters),
-            'results': json.dumps(results)
+            'result': json.dumps(result)
         }))

@@ -118,6 +118,11 @@ state: State = State(
     messages=[],
     tools=[
         Tool(
+            name="no_tool_needed",
+            description="Choose this option if no tool is needed and you can answer the question directly.",
+            instruction="...",
+        ),
+        Tool(
             name="file_downloader",
             description="Use this tool to download files from the Internet. As a result, this tool provides a local path to a downloaded file.",
             instruction=file_downloader_instruction,
@@ -162,7 +167,7 @@ async def root():
 async def handle_request(request: Request):
     try:
         # Update state questions
-        state.questions.append(request.question)
+        state.questions.append(request)
         
         for i in range(state.config["max_steps"]):
             # Make a plan
@@ -177,19 +182,22 @@ async def handle_request(request: Request):
                 'name': next_move['tool'],
                 'task_description': next_move['task_description']
             }
-            # Generate the parameters for the tool
-            parameters = await agent.describe(next_move['tool'], next_move['task_description'])
-            # If there's no tool to use, we're done
-            if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
-                break
-            # Use the tool
-            await agent.use_tool(next_move['tool'], parameters)
+            if next_move.get('tool') == 'no_tool_needed':
+                await agent.answer_the_question()
+            else:
+                # Generate the parameters for the tool
+                parameters = await agent.describe(next_move['tool'], next_move['task_description'])
+                # If there's no tool to use, we're done
+                if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
+                    break
+                # Use the tool
+                await agent.use_tool(next_move['tool'], parameters)
             # Increase the step counter
             state.config['current_step'] += 1
 
 
         answer = Response(answer=parameters)
-        state.answers.append(answer.answer)
+        state.answers.append(answer)
         
         if next_move.get('tool') == 'answer_to_server':
             return answer
