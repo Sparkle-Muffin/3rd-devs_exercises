@@ -169,6 +169,8 @@ async def handle_request(request: Request):
         # Update state questions
         state.questions.append(request)
         
+        next_move = None
+        parameters = None
         for i in range(state.config["max_steps"]):
             # Make a plan
             next_move = await agent.plan()
@@ -195,14 +197,27 @@ async def handle_request(request: Request):
             # Increase the step counter
             state.config['current_step'] += 1
 
+        # The loop has finished. Check if the agent decided on a final answer.
+        if next_move and (next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag'):
+            # The 'parameters' from the 'describe' call should be a dict with the answer.
+            final_answer_str = parameters.get('answer')
 
-        answer = Response(answer=parameters)
-        state.answers.append(answer)
-        
-        if next_move.get('tool') == 'answer_to_server':
+            # If the answer is not in the 'answer' key, maybe it's in 'flag' key
+            if not final_answer_str:
+                final_answer_str = parameters.get('flag')
+
+            # If we still don't have an answer, something is wrong.
+            # For safety, we can serialize the whole parameters dict to not lose information.
+            if not final_answer_str:
+                import json
+                final_answer_str = json.dumps(parameters)
+
+            answer = Response(answer=final_answer_str)
+            state.answers.append(answer)
             return answer
-        else:
-            return 0
+
+        # If the loop finished without a decision to answer, it's an error state.
+        raise HTTPException(status_code=500, detail="Agent could not determine an answer within the step limit.")
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

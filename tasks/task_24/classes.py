@@ -12,7 +12,7 @@ class Action(BaseModel):
     uuid: str
     name: str
     query: str
-    results: str
+    result: str
 
 class Tool(BaseModel):
     name: str
@@ -20,8 +20,8 @@ class Tool(BaseModel):
     instruction: str
 
 class State(BaseModel):
-    questions: List[Dict[str, Any]]
-    answers: List[Dict[str, Any]]
+    questions: List['Request']
+    answers: List['Response']
     tools: List[Tool]
     actions: List[Action]
     config: Dict[str, Any]

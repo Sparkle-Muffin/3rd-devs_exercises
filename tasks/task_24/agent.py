@@ -137,7 +137,7 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
         self.state.actions.append(Action(**{
             'uuid': str(uuid.uuid4()),
             'name': "Answered without using any tool",
-            'query': self.state.questions[-1],
+            'query': self.state.questions[-1].question,
             'result': answer.get('answer')
         }))
 
