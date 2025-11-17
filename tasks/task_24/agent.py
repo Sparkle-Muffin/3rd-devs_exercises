@@ -74,13 +74,14 @@ Respond with the next action in this JSON format:
 If you have finally completed all the tasks and captured the flag, use the "return_flag" tool."""
         }
 
-        answer = await self.gemini_msg_handler.call_gemini(
+        query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
             yolo=True,
             output_format="json"
         )
+        answer = json.loads(query_result.get('response'))
 
-        return answer if 'tool' in answer else None
+        return answer
 
     async def describe(self, tool: str, task_description: str) -> Dict[str, Any]:
         """Generate specific parameters for a tool."""
@@ -104,11 +105,13 @@ Previous actions: {', '.join(f'{action.name}: {action.query}' for action in self
 Respond with ONLY a JSON object matching the tool's parameter structure."""
         }
 
-        answer = await self.gemini_msg_handler.call_gemini(
+        query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
             yolo=True,
             output_format="json"
         )
+        answer = json.loads(query_result.get('response'))
+
         return answer
 
     async def answer_the_question(self) -> None:
@@ -128,11 +131,13 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
         """
         }
 
-        answer = await self.gemini_msg_handler.call_gemini(
+        query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
             yolo=True,
             output_format="json"
         )
+
+        answer = json.loads(query_result.get('response'))
         
         self.state.actions.append(Action(**{
             'uuid': str(uuid.uuid4()),

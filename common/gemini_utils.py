@@ -11,7 +11,8 @@ def ts():
 
 
 async def run_gemini_process(args):
-    print(f"[{ts()}][gemini] Spawning: gemini {' '.join(args)}")
+    # print(f"[{ts()}][gemini] Spawning: gemini {' '.join(args)}")
+    print(f"[{ts()}][gemini] Spawning: gemini")
 
     # Start process
     process = await asyncio.create_subprocess_exec(
@@ -50,10 +51,11 @@ async def run_gemini_process(args):
         print(f"[{ts()}][gemini] Process completed with code: {code}")
         stdout_str = "".join(out_buf).strip()
         print(f"[{ts()}][gemini] Output length: {len(stdout_str)} characters")
+        print(f"[{ts()}][gemini] Error: {str(err_buf)}")
 
         return {
             "stdout": stdout_str,
-            "stderr": "".join(err_buf).strip(),
+            "stderr": str(err_buf),
             "code": code,
         }
 
@@ -64,7 +66,7 @@ async def run_gemini_process(args):
 
         return {
             "stdout": "".join(out_buf).strip(),
-            "stderr": ("".join(err_buf).strip() + " [timeout]"),
+            "stderr": str(err_buf) + " [timeout]",
             "code": 124,  # like JS example
         }
 
@@ -99,13 +101,20 @@ class GeminiCLIClient:
         output_format: Optional[str] = None
     ) -> str:
 
-        yolo = "--yolo" if yolo else ""
-        model = f"--model {model}" if model else ""
-        output_format = f"--output-format {output_format}" if output_format else ""
+        args = []
+        if yolo:
+            args.append("--yolo")
+        if model:
+            args.append(f"--model")
+            args.append(model)
+        if output_format:
+            args.append(f"--output-format")
+            args.append(output_format)
+        args.append("--prompt")
+        args.append(str(messages))
 
-        args = [yolo, model, output_format, "--prompt", *messages]
-
-        response = await run_gemini_process(args).stdout
+        process_result = await run_gemini_process(args)
+        response = process_result.get("stdout", "")
         print(response)
 
         file_number = self._get_next_file_number(self.query_dir)
