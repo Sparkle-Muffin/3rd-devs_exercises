@@ -4,7 +4,7 @@ import json
 from typing import Dict, List, Optional
 from common.file_utils import save_json, save_txt_file
 
-GEMINI_TIMEOUT_MS = 100_000  # example
+GEMINI_TIMEOUT_MS = 1_000_000  # 10 minutes
 
 def ts():
     return time.strftime("%Y-%m-%d %H:%M:%S")

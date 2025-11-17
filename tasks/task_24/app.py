@@ -13,7 +13,7 @@ from common.file_utils import read_file_content
 from common.centrala_aidevs_utils import AidevsMessageHandler
 from agent import Agent
 from dotenv import load_dotenv
-
+from common.logging import Logging
 load_dotenv()
 
 # Initialize directories
@@ -25,9 +25,15 @@ downloads_dir = task_path / "downloads"
 downloads_dir.mkdir(parents=True, exist_ok=True)
 program_files_dir = task_path / "program_files"
 program_files_dir.mkdir(parents=True, exist_ok=True)
+questions_dir = task_path / "questions"
+questions_dir.mkdir(parents=True, exist_ok=True)
+answers_dir = task_path / "answers"
+answers_dir.mkdir(parents=True, exist_ok=True)
 
 # Initialize variables
 aidevs_msg_handler = AidevsMessageHandler(task_name, task_path)
+questions_logging = Logging(questions_dir)
+answers_logging = Logging(answers_dir)
 ngrok_tunnel_url: Optional[str] = None
 _ngrok_tunnel = None
 _announce_task: Optional[asyncio.Task] = None
@@ -119,11 +125,6 @@ state: State = State(
     answers=[],
     tools=[
         Tool(
-            name="no_tool_needed",
-            description="Choose this option if no tool is needed and you can answer the question directly.",
-            instruction="...",
-        ),
-        Tool(
             name="file_downloader",
             description="Use this tool to download files from the Internet. As a result, this tool provides a local path to a downloaded file.",
             instruction=file_downloader_instruction,
@@ -167,6 +168,8 @@ async def root():
 @app.post("/", response_model=Response, status_code=200)
 async def handle_request(request: Request):
     try:
+        # Log request
+        questions_logging.log(request)
         # Sanitize request
         sanitized_request = await agent.sanitize_request(request.question)
         
@@ -188,16 +191,13 @@ async def handle_request(request: Request):
                 'name': next_move['tool'],
                 'task_description': next_move['task_description']
             }
-            if next_move.get('tool') == 'no_tool_needed':
-                await agent.answer_the_question()
-            else:
-                # Generate the parameters for the tool
-                parameters = await agent.describe(next_move['tool'], next_move['task_description'])
-                # If there's no tool to use, we're done
-                if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
-                    break
-                # Use the tool
-                await agent.use_tool(next_move['tool'], parameters)
+            # Generate the parameters for the tool
+            parameters = await agent.describe(next_move['tool'], next_move['task_description'])
+            # If there's no tool to use, we're done
+            if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
+                break
+            # Use the tool
+            await agent.use_tool(next_move['tool'], parameters)
             # Increase the step counter
             state.config['current_step'] += 1
 
@@ -218,6 +218,8 @@ async def handle_request(request: Request):
 
             state.answers.append(final_answer_str)
             answer = Response(answer=final_answer_str)
+            # Log answer
+            answers_logging.log(answer.answer)
             return answer
 
         # If the loop finished without a decision to answer, it's an error state.
