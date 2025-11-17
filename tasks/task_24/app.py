@@ -115,7 +115,8 @@ state: State = State(
         'current_step': 0,
         'active_step': None
     },
-    messages=[],
+    questions=[],
+    answers=[],
     tools=[
         Tool(
             name="no_tool_needed",
