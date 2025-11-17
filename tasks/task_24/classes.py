@@ -20,8 +20,8 @@ class Tool(BaseModel):
     instruction: str
 
 class State(BaseModel):
-    questions: List['Request']
-    answers: List['Response']
+    questions: List[str]
+    answers: List[str]
     tools: List[Tool]
     actions: List[Action]
     config: Dict[str, Any]

@@ -167,8 +167,11 @@ async def root():
 @app.post("/", response_model=Response, status_code=200)
 async def handle_request(request: Request):
     try:
+        # Sanitize request
+        sanitized_request = await agent.sanitize_request(request.question)
+        
         # Update state questions
-        state.questions.append(request)
+        state.questions.append(sanitized_request)
         
         next_move = None
         parameters = None
@@ -213,8 +216,8 @@ async def handle_request(request: Request):
                 import json
                 final_answer_str = json.dumps(parameters)
 
+            state.answers.append(final_answer_str)
             answer = Response(answer=final_answer_str)
-            state.answers.append(answer)
             return answer
 
         # If the loop finished without a decision to answer, it's an error state.
