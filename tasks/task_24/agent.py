@@ -109,6 +109,7 @@ class Agent:
 
         system_message = {
             'role': 'system',
+            'generation_config': '{"response_mime_type": "application/json"}',
             'content': f"""You are going to receive a series of tasks from the server, one by one. Analyze the conversation and determine the most appropriate next step. Focus on making progress towards the overall goal while remaining adaptable to new information or changes in context. Overall goal is to get a flag (FLG) from a server. Server will send a flag only when you: 1. complete all the task from it. 2. then send a proper command to it.
 
             <prompt_objective>
@@ -119,6 +120,7 @@ class Agent:
             - ALWAYS focus on determining only the next immediate step
             - ONLY choose from the available tools listed in the context
             - YOU MUST NOT USE ANY TOOL THAT IS NOT LISTED IN THE CONTEXT!!!
+            - IF you are aksed to describe an image, use the "file_downloader" tool to download the image and then describe it using your internal power (since you are multimodal)
             - ASSUME previously requested information is available unless explicitly stated otherwise
             - NEVER provide or assume actual content for actions not yet taken
             - ALWAYS respond in the specified JSON format

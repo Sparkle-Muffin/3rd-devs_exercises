@@ -182,9 +182,13 @@ async def handle_request(request: Request):
             # Make a plan
             next_move = await agent.plan()
 
-            print('Thinking...', next_move.get('_reasoning'))
-            print(f"Tool: {next_move.get('tool')}")
-            print(f"Task description: {next_move.get('task_description')}")
+            try:
+                print('Thinking...', next_move.get('_reasoning'))
+                print(f"Tool: {next_move.get('tool')}")
+                print(f"Task description: {next_move.get('task_description')}")
+            except:
+                print(f"next_move dictionary is not valid: {next_move}")
+                raise HTTPException(status_code=500, detail=str(e))
                             
             # Set the active step
             state.config['active_step'] = {
@@ -219,7 +223,7 @@ async def handle_request(request: Request):
             state.answers.append(final_answer_str)
             answer = Response(answer=final_answer_str)
             # Log answer
-            answers_logging.log(answer.answer)
+            answers_logging.log(answer)
             return answer
 
         # If the loop finished without a decision to answer, it's an error state.
