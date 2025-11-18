@@ -22,6 +22,41 @@ class Agent:
         self.program_files_dir = program_files_dir
         self.state = state
 
+    def _extract_json_from_response(self, response: str) -> Dict[str, Any]:
+        """Extract JSON object from response string that may contain text before/after JSON."""
+        if not response:
+            raise ValueError("Empty response")
+        
+        # First, try to parse the entire response as JSON
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            pass
+        
+        # If that fails, try to find and extract JSON object from the string
+        # Look for the first occurrence of { and find the matching }
+        start_idx = response.find('{')
+        if start_idx == -1:
+            raise ValueError(f"No JSON object found in response: {response[:100]}...")
+        
+        # Find the matching closing brace by counting braces
+        brace_count = 0
+        end_idx = start_idx
+        for i in range(start_idx, len(response)):
+            if response[i] == '{':
+                brace_count += 1
+            elif response[i] == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    end_idx = i + 1
+                    break
+        
+        if brace_count != 0:
+            raise ValueError(f"Unbalanced braces in JSON response: {response[:100]}...")
+        
+        json_str = response[start_idx:end_idx]
+        return json.loads(json_str)
+
 
     async def sanitize_request(self, request: str) -> str:
         system_message = {
@@ -56,7 +91,7 @@ class Agent:
             yolo=True,
             output_format="json"
         )
-        answer = json.loads(query_result.get('response'))
+        answer = self._extract_json_from_response(query_result.get('response'))
         return answer.get('sanitized_request')
 
 
@@ -83,6 +118,7 @@ class Agent:
             <prompt_rules>
             - ALWAYS focus on determining only the next immediate step
             - ONLY choose from the available tools listed in the context
+            - YOU MUST NOT USE ANY TOOL THAT IS NOT LISTED IN THE CONTEXT!!!
             - ASSUME previously requested information is available unless explicitly stated otherwise
             - NEVER provide or assume actual content for actions not yet taken
             - ALWAYS respond in the specified JSON format
@@ -107,7 +143,7 @@ class Agent:
                 <actions_taken>Actions taken: {actions_taken}</actions_taken>
             </context>
 
-            Respond with the next action in this JSON format:
+            Respond with the next action in EXACTLY this JSON format. YOU MUST NOT ADD ANY OTHER KEYS OR VALUES!!!
             {{
                 "_reasoning": "Brief explanation of why this action is the most appropriate next step",
                 "tool": "tool_name",
@@ -122,7 +158,7 @@ class Agent:
             yolo=True,
             output_format="json"
         )
-        answer = json.loads(query_result.get('response'))
+        answer = self._extract_json_from_response(query_result.get('response'))
 
         return answer
 
@@ -154,7 +190,7 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             yolo=True,
             output_format="json"
         )
-        answer = json.loads(query_result.get('response'))
+        answer = self._extract_json_from_response(query_result.get('response'))
 
         return answer
 
