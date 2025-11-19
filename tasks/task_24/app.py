@@ -186,6 +186,7 @@ async def handle_request(request: Request):
                 print('Thinking...', next_move.get('_reasoning'))
                 print(f"Tool: {next_move.get('tool')}")
                 print(f"Task description: {next_move.get('task_description')}")
+                print(f"Data: {next_move.get('data')}")
             except:
                 print(f"next_move dictionary is not valid: {next_move}")
                 raise HTTPException(status_code=500, detail=str(e))
@@ -193,10 +194,11 @@ async def handle_request(request: Request):
             # Set the active step
             state.config['active_step'] = {
                 'name': next_move['tool'],
-                'task_description': next_move['task_description']
+                'task_description': next_move['task_description'],
+                'data': next_move['data']
             }
             # Generate the parameters for the tool
-            parameters = await agent.describe(next_move['tool'], next_move['task_description'])
+            parameters = await agent.describe(next_move['tool'], next_move['task_description'], next_move['data'])
             # If there's no tool to use, we're done
             if next_move.get('tool') == 'answer_to_server' or next_move.get('tool') == 'return_flag':
                 break
