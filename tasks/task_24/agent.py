@@ -180,22 +180,22 @@ class Agent:
             {file_path}
             </image_path>
             <rules>
-            - Respond in Polish.
+            - Respond in Polish. Responding in English will be penalized.
             - Don't add any comments or formatting.
             - Answer in JSON format provided.
             </rules>
             <answer_format>
-            {
+            {{
                 "_reasoning": "your thinking process",
                 "image_description": "description of the image"
-            }
+            }}
             </answer_format>
             """
         }
 
         query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
-            # yolo=True,
+            yolo=True,
             output_format="json"
         )
         answer = self._extract_json_from_response(query_result.get('response'))

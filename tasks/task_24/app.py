@@ -81,7 +81,7 @@ async def lifespan(_: FastAPI):
     global _announce_task
     try:
         run_ngrok()
-        _announce_task = asyncio.create_task(_notify_centrala_when_ready())
+        # _announce_task = asyncio.create_task(_notify_centrala_when_ready())
         yield
     finally:
         if _announce_task:
