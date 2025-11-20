@@ -12,7 +12,6 @@ from typing import Dict, Any, Optional
 from classes import State, Action
 from tools.file_downloader.file_downloader import download_file_tool
 from tools.speech_to_text_tool.speech_to_text_tool import speech_to_text_tool
-from tools.image_description_tool.image_description_tool import image_description_tool
 
 
 class Agent:
@@ -180,7 +179,17 @@ class Agent:
             <image_path>
             {file_path}
             </image_path>
-            Respond in Polish with the description of the image in a text string form.
+            <rules>
+            - Respond in Polish.
+            - Don't add any comments or formatting.
+            - Answer in JSON format provided.
+            </rules>
+            <answer_format>
+            {
+                "_reasoning": "your thinking process",
+                "image_description": "description of the image"
+            }
+            </answer_format>
             """
         }
 
@@ -191,7 +200,7 @@ class Agent:
         )
         answer = self._extract_json_from_response(query_result.get('response'))
 
-        return answer
+        return answer.get('image_description')
 
 
     async def describe(self, tool: str, task_description: str, data: str) -> Dict[str, Any]:
