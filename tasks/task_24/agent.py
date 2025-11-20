@@ -12,6 +12,7 @@ from typing import Dict, Any, Optional
 from classes import State, Action
 from tools.file_downloader.file_downloader import download_file_tool
 from tools.speech_to_text_tool.speech_to_text_tool import speech_to_text_tool
+from tools.image_description_tool.image_description_tool import image_description_tool
 
 
 class Agent:
@@ -88,7 +89,7 @@ class Agent:
         }   
         query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
-            yolo=True,
+            # yolo=True,
             output_format="json"
         )
         answer = self._extract_json_from_response(query_result.get('response'))
@@ -122,8 +123,8 @@ class Agent:
             - YOU MUST NOT USE ANY TOOL THAT IS NOT LISTED IN THE CONTEXT!!!
             - IF you are asked if you are a robot, answer "TAK"
             - IF you are aksed to describe an image:
-            1. Use the "file_downloader" tool to download the image
-            2. Open the downloaded image (path provided as "file_downloader" tool result) and describe it using your internal power (since you are multimodal)
+            1. Use the "file_downloader" tool to download the image (YOU MUSN'T download the image by yourself!!!)
+            2. Use the "image_description_tool" to describe the image (YOU MUSN'T describe the image by yourself!!!)
             3. Provide the description as a data to the "answer_to_server" tool
             - ASSUME previously requested information is available unless explicitly stated otherwise
             - NEVER provide or assume actual content for actions not yet taken
@@ -150,7 +151,7 @@ class Agent:
                 <actions_taken>Actions taken: {actions_taken}</actions_taken>
             </context>
 
-            Respond with the next action in EXACTLY this JSON format. YOU MUST NOT ADD ANY OTHER KEYS OR VALUES!!!
+            Respond with the next action in EXACTLY this JSON format. YOU MUST NOT ADD ANY OTHER KEYS OR VALUES!!! If you choose "save_memory" tool, it means that you are an idiot, BECAUSE SUCH TOOL DOES  EXIST!!!
             {{
                 "_reasoning": "Brief explanation of why this action is the most appropriate next step",
                 "tool": "tool_name",
@@ -163,7 +164,29 @@ class Agent:
 
         query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
-            yolo=True,
+            # yolo=True,
+            output_format="json"
+        )
+        answer = self._extract_json_from_response(query_result.get('response'))
+
+        return answer
+
+
+    async def image_description_tool(self, file_path: str) -> str:
+        """Describe an image."""
+        system_message = {
+            'role': 'system',
+            'content': f"""You are multimodal, capable of describing images. You have to use your internal read_file tool to do so. Tell me what is on this picture (this is a local directory, not web address):
+            <image_path>
+            {file_path}
+            </image_path>
+            Respond in Polish with the description of the image in a text string form.
+            """
+        }
+
+        query_result = await self.gemini_msg_handler.call_gemini(
+            messages=[system_message],
+            # yolo=True,
             output_format="json"
         )
         answer = self._extract_json_from_response(query_result.get('response'))
@@ -181,22 +204,22 @@ class Agent:
             'role': 'system',
             'content': f"""Generate specific parameters for the "{tool_info.name}" tool.
 
-<context>
-Current date: {datetime.now().isoformat()}
-Tool description: {tool_info.description}
-Tool instructions: {tool_info.instruction}
-Original task description: {task_description}
-Data to be sent to the tool: {data}
-Last question: "{self.state.questions[-1] if self.state.questions else ''}"
-Previous actions: {', '.join(f'{action.name}: {action.query}' for action in self.state.actions)}
-</context>
+        <context>
+        Current date: {datetime.now().isoformat()}
+        Tool description: {tool_info.description}
+        Tool instructions: {tool_info.instruction}
+        Original task description: {task_description}
+        Data to be sent to the tool: {data}
+        Last question: "{self.state.questions[-1] if self.state.questions else ''}"
+        Previous actions: {', '.join(f'{action.name}: {action.query}' for action in self.state.actions)}
+        </context>
 
-Respond with ONLY a JSON object matching the tool's parameter structure."""
+        Respond with ONLY a JSON object matching the tool's parameter structure."""
         }
 
         query_result = await self.gemini_msg_handler.call_gemini(
             messages=[system_message],
-            yolo=True,
+            # yolo=True,
             output_format="json"
         )
         answer = self._extract_json_from_response(query_result.get('response'))
@@ -210,6 +233,8 @@ Respond with ONLY a JSON object matching the tool's parameter structure."""
             result = await asyncio.to_thread(download_file_tool, parameters['file_url'], self.downloads_dir)
         elif tool == 'speech_to_text_tool':
             result = await asyncio.to_thread(speech_to_text_tool, parameters['file_path'], self.program_files_dir)
+        elif tool == 'image_description_tool':
+            result = await self.image_description_tool(parameters['file_path'])
         else:
             raise ValueError(f'Tool {tool} not found')
 

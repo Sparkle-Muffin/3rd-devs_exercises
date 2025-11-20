@@ -113,6 +113,7 @@ file_downloader_instruction = read_file_content(tools_dir / "file_downloader/fil
 speech_to_text_tool_instruction = read_file_content(tools_dir / "speech_to_text_tool/speech_to_text_tool_instruction.txt")
 answer_to_server_instruction = read_file_content(tools_dir / "answer_to_server/answer_to_server_instruction.txt")
 return_flag_instruction = read_file_content(tools_dir / "return_flag/return_flag_instruction.txt")
+image_description_tool_instruction = read_file_content(tools_dir / "image_description_tool/image_description_tool_instruction.txt")
 
 # Initialize state
 state: State = State(
@@ -133,6 +134,11 @@ state: State = State(
             name="speech_to_text_tool",
             description="Use this tool to transcript an audio file to text. File has to be downloaded first using file_downloader tool. As a result, this tool provides a transcripted file in a text string form.",
             instruction=speech_to_text_tool_instruction,
+        ),
+        Tool(
+            name="image_description_tool",
+            description="Use this tool to describe an image. File has to be downloaded first using file_downloader tool. As a result, this tool provides a description of the image in a text string form.",
+            instruction=image_description_tool_instruction,
         ),
         Tool(
             name="answer_to_server",
