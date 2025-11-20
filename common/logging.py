@@ -26,7 +26,11 @@ class Logging:
                 return message.dict()
             except TypeError:
                 pass
-        if isinstance(message, (dict, list, str, int, float, bool)) or message is None:
+        if isinstance(message, dict):
+            return {key: self._serialize_message(value) for key, value in message.items()}
+        if isinstance(message, (list, tuple, set)):
+            return [self._serialize_message(value) for value in message]
+        if isinstance(message, (str, int, float, bool)) or message is None:
             return message
         return str(message)
 

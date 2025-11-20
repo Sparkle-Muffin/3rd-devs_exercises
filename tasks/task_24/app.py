@@ -1,7 +1,7 @@
 import os
 import sys
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request as FastAPIRequest
 from fastapi.middleware.cors import CORSMiddleware
 from classes import Request, Response, State, Tool
 from typing import Optional
@@ -166,10 +166,13 @@ async def root():
 
 # Create new item
 @app.post("/", response_model=Response, status_code=200)
-async def handle_request(request: Request):
+async def handle_request(request: Request, fastapi_request: FastAPIRequest):
     try:
         # Log request
-        questions_logging.log(request)
+        questions_logging.log({
+            "headers": dict(fastapi_request.headers),
+            "body": request
+        })
         # Sanitize request
         sanitized_request = await agent.sanitize_request(request.question)
         
