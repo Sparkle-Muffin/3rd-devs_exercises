@@ -228,7 +228,7 @@ class Agent:
         </context>
 
         <rules>
-        - When creating parameters, stick strictly to the data provided. This data is more important than your general knowledge.
+        - STICK STRICTLY TO THE DATA PROVIDED. THIS DATA HAS PRIORITY OVER YOUR GENERAL KNOWLEDGE.
         </rules>
 
         Respond with ONLY a JSON object matching the tool's parameter structure."""
