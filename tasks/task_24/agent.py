@@ -155,7 +155,7 @@ class Agent:
 
             <context>
                 <current_date>Current date: {datetime.now().isoformat()}</current_date>
-                <last_question>Last question: "{self.state.questions[-1] if self.state.questions else 'No questions yet'}"</last_question>
+                <current_question>Current question (prepare action for this question): "{self.state.questions[-1] if self.state.questions else 'No questions yet'}"</current_question>
                 <previous_questions>Previous questions: {', '.join(f'"{question}"' for question in self.state.questions) if self.state.questions else 'No questions yet'}</previous_questions>
                 <available_tools>Available tools: {', '.join(f"{tool.name}: {tool.description}" for tool in self.state.tools) if self.state.tools else 'No tools available'}</available_tools>
                 <actions_taken>Actions taken: {actions_taken}</actions_taken>
