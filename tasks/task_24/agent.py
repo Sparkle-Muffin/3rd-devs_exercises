@@ -150,7 +150,7 @@ class Agent:
                 <actions_taken>Actions taken: {actions_taken}</actions_taken>
             </context>
 
-            Respond with the next action in EXACTLY this JSON format. YOU MUST NOT ADD ANY OTHER KEYS OR VALUES!!! If you choose "save_memory" tool, it means that you are an idiot, BECAUSE SUCH TOOL DOES  EXIST!!!
+            Respond with the next action in EXACTLY this JSON format. YOU MUST NOT ADD ANY OTHER KEYS OR VALUES!!! If you choose "save_memory" tool, it means that you are an idiot, BECAUSE SUCH TOOL DOES NOT EXIST!!!
             {{
                 "_reasoning": "Brief explanation of why this action is the most appropriate next step",
                 "tool": "tool_name",
