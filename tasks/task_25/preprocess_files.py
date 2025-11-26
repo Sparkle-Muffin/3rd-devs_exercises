@@ -52,10 +52,10 @@ def clean_and_unify_text(text: str) -> str:
     text = re.sub(r"\|", "", text)  # Remove markdown tables
 
     # Remove excessive punctuation
-    text = re.sub(r"\.{2,}", ".", text)  # Replace multiple dots with single
+    # text = re.sub(r"\.{2,}", ".", text)  # Replace multiple dots with single
     text = re.sub(r"!{2,}", "!", text)  # Replace multiple exclamation marks with single
     text = re.sub(r"\?{2,}", "?", text)  # Replace multiple question marks with single
-    text = re.sub(r"\n+", "\n\n", text)  # Replace multiple newlines with two newlines
+    text = re.sub(r"\n{2,}", "\n\n", text)  # Replace multiple newlines with two newlines
 
     text = text.lower()  # Lowercase all text
 
@@ -122,16 +122,13 @@ def preprocess_files(
         output_dir: Directory where processed files should be saved
         preprocess_func: Function to apply to each file's content
     """
-    # List docs files
-    docs_files = os.listdir(input_dir)
-
-    for file in docs_files:
-        print(f"Processing: {file}")
-
-        # Skip directories
-        file_path = input_dir / file
+    # Walk recursively to cover nested content
+    for file_path in input_dir.rglob("*"):
         if file_path.is_dir():
             continue
+
+        relative_path = file_path.relative_to(input_dir)
+        print(f"Processing: {relative_path}")
 
         try:
             # Read the file content
@@ -141,8 +138,9 @@ def preprocess_files(
             # Apply comprehensive cleaning
             cleaned_content = preprocess_func(content)
 
-            # Save the cleaned content to db_cleaned_up_dir
-            output_path = output_dir / file
+            # Save the cleaned content to mirror the relative structure
+            output_path = output_dir / relative_path
+            output_path.parent.mkdir(parents=True, exist_ok=True)
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(cleaned_content)
 
@@ -152,7 +150,7 @@ def preprocess_files(
             )
 
         except Exception as e:
-            print(f"  ✗ Error processing {file}: {e}")
+            print(f"  ✗ Error processing {relative_path}: {e}")
 
 
 def main():
