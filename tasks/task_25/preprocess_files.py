@@ -6,6 +6,9 @@ from typing import Callable, Any
 import string
 
 
+MAX_CHUNK_LENGTH = 350
+
+
 def count_text_elements(text: str) -> int:
     if not text:
         return 0
@@ -162,10 +165,14 @@ def main():
     docs_preprocessed_dir.mkdir(exist_ok=True)
     docs_cleaned_up_dir = docs_preprocessed_dir / "docs_cleaned_up"
     docs_cleaned_up_dir.mkdir(exist_ok=True)
+    docs_divided_into_chunks_dir = docs_preprocessed_dir / "docs_divided_into_chunks"
+    docs_divided_into_chunks_dir.mkdir(exist_ok=True)
 
+    # # 1. Clean up and unify structure of docs files
+    # preprocess_files(docs_unprocessed_dir, docs_cleaned_up_dir, clean_and_unify_text)
 
-    # 1. Clean up and unify structure of docs files
-    preprocess_files(docs_unprocessed_dir, docs_cleaned_up_dir, clean_and_unify_text)
+    # 2. Split docs into chunks
+    preprocess_files(docs_cleaned_up_dir, docs_divided_into_chunks_dir, split_into_chunks)
 
 
 if __name__ == "__main__":
