@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from typing import Callable, Any
 import string
+import math
 
 
 MAX_CHUNK_LENGTH = 350
@@ -69,10 +70,7 @@ def clean_and_unify_text(text: str) -> str:
 
 def split_into_chunks(text: str) -> str:
     """
-    Split text into logical chunks based on header structure.
-
-    Analyzes markdown headers to create context-aware chunks. Each chunk
-    includes the relevant header context to maintain semantic meaning.
+    Split text into logical chunks based on header structure and length limits.
 
     Args:
         text: Text with markdown headers to be split
@@ -81,33 +79,152 @@ def split_into_chunks(text: str) -> str:
         Text with chunks separated by double newlines, each chunk containing
         relevant header context
     """
-    chunks = []
-    headers_stack = []
 
-    lines = text.split("\n")
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue  # Skip empty lines
+    def split_text_with_limit(text_to_split: str, context: str = "") -> list[str]:
+        if not text_to_split.strip():
+            return []
 
-        # Check if line is a header
-        header_match = re.match(r"^(#+)\s+(.*)", line)
+        normalized_text = text_to_split.strip()
+        if not normalized_text:
+            return []
+
+        # Count context length if provided
+        context_len = count_text_elements(context) if context else 0
+        available_len = MAX_CHUNK_LENGTH - context_len - (1 if context else 0)  # -1 for space
+        
+        if count_text_elements(normalized_text) <= available_len:
+            if context:
+                return [f"{context} {normalized_text}".strip()]
+            return [normalized_text]
+
+        sentences = re.split(r"(?<=[.!?])\s+", normalized_text)
+        sentences = [s.strip() for s in sentences if s.strip()]
+        if not sentences:
+            if context:
+                return [f"{context} {normalized_text}".strip()]
+            return [normalized_text]
+
+        # Calculate total length and estimate number of chunks needed
+        sentence_lengths = [count_text_elements(s) for s in sentences]
+        total_len = sum(sentence_lengths)
+        num_chunks = max(1, math.ceil(total_len / available_len))
+        target_chunk_len = max(1, total_len // num_chunks)
+
+        chunks_list: list[str] = []
+        current_sentences: list[str] = []
+        current_len = 0
+        length_consumed = 0
+
+        for sentence, sentence_len in zip(sentences, sentence_lengths):
+            # If adding this sentence would exceed limit, finalize current chunk
+            if current_sentences and current_len + sentence_len > available_len:
+                chunk_text = " ".join(current_sentences).strip()
+                if context:
+                    chunks_list.append(f"{context} {chunk_text}".strip())
+                else:
+                    chunks_list.append(chunk_text)
+                current_sentences = [sentence]
+                current_len = sentence_len
+                length_consumed += sentence_len
+                # Recalculate target for remaining chunks
+                remaining_len = total_len - length_consumed
+                remaining_chunks = num_chunks - len(chunks_list)
+                if remaining_chunks > 0:
+                    target_chunk_len = max(1, remaining_len // remaining_chunks)
+                continue
+
+            current_sentences.append(sentence)
+            current_len += sentence_len
+            length_consumed += sentence_len
+
+            # If we've reached target length and there's more to process, finalize chunk
+            remaining_len = total_len - length_consumed
+            remaining_chunks = num_chunks - len(chunks_list)
+            if (
+                current_len >= target_chunk_len
+                and remaining_len > 0
+                and remaining_chunks > 1
+            ):
+                chunk_text = " ".join(current_sentences).strip()
+                if context:
+                    chunks_list.append(f"{context} {chunk_text}".strip())
+                else:
+                    chunks_list.append(chunk_text)
+                current_sentences = []
+                current_len = 0
+                if remaining_chunks > 1:
+                    target_chunk_len = max(1, remaining_len // remaining_chunks)
+
+        if current_sentences:
+            chunk_text = " ".join(current_sentences).strip()
+            if context:
+                chunks_list.append(f"{context} {chunk_text}".strip())
+            else:
+                chunks_list.append(chunk_text)
+
+        return chunks_list
+
+    if not text or not text.strip():
+        return ""
+
+    header_regex = re.compile(r"^(#+)\s+(.*)", re.MULTILINE)
+    if not header_regex.search(text):
+        normalized = text.strip()
+        limited_chunks = split_text_with_limit(normalized)
+        return "\n\n".join(f"@ {chunk}" for chunk in limited_chunks)
+
+    chunks: list[str] = []
+    headers_stack: list[str] = []
+    current_content: list[str] = []
+
+    def flush_current_content() -> None:
+        nonlocal current_content
+        if not current_content:
+            return
+
+        paragraphs: list[str] = []
+        accumulator: list[str] = []
+
+        for line in current_content:
+            if line:
+                accumulator.append(line)
+            else:
+                if accumulator:
+                    paragraphs.append(" ".join(accumulator).strip())
+                    accumulator = []
+
+        if accumulator:
+            paragraphs.append(" ".join(accumulator).strip())
+
+        current_content = []
+        paragraph_text = "\n\n".join(p for p in paragraphs if p)
+        if not paragraph_text:
+            return
+
+        context = " ".join(headers_stack).strip()
+        chunks.extend(split_text_with_limit(paragraph_text, context))
+
+    for raw_line in text.splitlines():
+        stripped_line = raw_line.strip()
+        header_match = re.match(r"^(#+)\s+(.*)", stripped_line)
+
         if header_match:
-            level = len(header_match.group(1))  # number of '#'
+            flush_current_content()
+            level = len(header_match.group(1))
             header_text = header_match.group(2).strip()
-
-            # Cut headers stack to current level
             headers_stack = headers_stack[: level - 1]
             headers_stack.append(header_text)
+            continue
+
+        if stripped_line:
+            current_content.append(stripped_line)
         else:
-            # This is content -> create chunk
-            context = " ".join(headers_stack)
-            chunk = f"{context} {line}"
-            chunks.append(chunk)
+            if current_content and current_content[-1] != "":
+                current_content.append("")
 
-    text = "\n\n".join(chunks)
+    flush_current_content()
 
-    return text
+    return "\n\n".join(f"@ {chunk}" for chunk in chunks)
 
 
 def preprocess_files(
