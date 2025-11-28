@@ -260,6 +260,61 @@ def preprocess_files(
             print(f"  ✗ Error processing {relative_path}: {e}")
 
 
+def create_chunk_files(input_dir: Path, output_dir: Path) -> None:
+    """
+    Create individual text chunk files for embedding and BM25 encoding.
+
+    Args:
+        input_dir: Directory containing files to split into chunks
+        output_dir: Directory where chunk files should be saved
+    """
+    # Global counter for chunk numbering
+    chunk_counter = 0
+    
+    # Walk recursively to cover nested content
+    for file_path in input_dir.rglob("*"):
+        if file_path.is_dir():
+            continue
+        
+        relative_path = file_path.relative_to(input_dir)
+        print(f"Processing: {relative_path}")
+        
+        try:
+            # Read the file content
+            with open(file_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            
+            # Split content into chunks (chunks are separated by "\n\n" and start with "@ ")
+            chunks = [chunk.strip() for chunk in content.split("\n\n") if chunk.strip().startswith("@ ")]
+            
+            if not chunks:
+                print(f"  ⚠ No chunks found in {relative_path}")
+                continue
+            
+            # Create a separate file for each chunk
+            for chunk in chunks:
+                # Remove "@ " from the beginning of the chunk
+                if chunk.startswith("@ "):
+                    chunk = chunk[2:]
+                
+                chunk_filename = f"{chunk_counter}.txt"
+                chunk_path = output_dir / chunk_filename
+                
+                with open(chunk_path, "w", encoding="utf-8") as f:
+                    f.write(chunk)
+                
+                print(f"  ✓ Created chunk {chunk_counter}: {chunk_path}")
+                chunk_counter += 1
+            
+            print(f"  ✓ Created {len(chunks)} chunk(s) from {relative_path}")
+            
+        except Exception as e:
+            print(f"  ✗ Error processing {relative_path}: {e}")
+    
+    print(f"\n✓ Total chunks created: {chunk_counter}")
+
+
+
 def main():
     # 0. Initialize
     task_path = Path(__file__).parent
@@ -271,12 +326,17 @@ def main():
     docs_cleaned_up_dir.mkdir(exist_ok=True)
     docs_divided_into_chunks_dir = docs_preprocessed_dir / "docs_divided_into_chunks"
     docs_divided_into_chunks_dir.mkdir(exist_ok=True)
+    text_chunks_dir = program_files_dir / "text_chunks"
+    text_chunks_dir.mkdir(exist_ok=True)
 
-    # # 1. Clean up and unify structure of docs files
-    # preprocess_files(docs_unprocessed_dir, docs_cleaned_up_dir, clean_and_unify_text)
+    # 1. Clean up and unify structure of docs files
+    preprocess_files(docs_unprocessed_dir, docs_cleaned_up_dir, clean_and_unify_text)
 
     # 2. Split docs into chunks
     preprocess_files(docs_cleaned_up_dir, docs_divided_into_chunks_dir, split_into_chunks)
+
+    # 3. Create chunk files
+    create_chunk_files(docs_divided_into_chunks_dir, text_chunks_dir)
 
 
 if __name__ == "__main__":
