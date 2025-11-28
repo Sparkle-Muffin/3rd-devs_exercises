@@ -169,7 +169,7 @@ def split_into_chunks(text: str) -> str:
 
     header_regex = re.compile(r"^(#+)\s+(.*)", re.MULTILINE)
     if not header_regex.search(text):
-        normalized = text.strip()
+        normalized = re.sub(r"\n+", "\n", text.strip())
         limited_chunks = split_text_with_limit(normalized)
         return "\n\n".join(f"@ {chunk}" for chunk in limited_chunks)
 
@@ -182,22 +182,9 @@ def split_into_chunks(text: str) -> str:
         if not current_content:
             return
 
-        paragraphs: list[str] = []
-        accumulator: list[str] = []
-
-        for line in current_content:
-            if line:
-                accumulator.append(line)
-            else:
-                if accumulator:
-                    paragraphs.append(" ".join(accumulator).strip())
-                    accumulator = []
-
-        if accumulator:
-            paragraphs.append(" ".join(accumulator).strip())
-
+        paragraph_text = "\n".join(current_content).strip()
+        paragraph_text = re.sub(r"\n+", "\n", paragraph_text)
         current_content = []
-        paragraph_text = "\n\n".join(p for p in paragraphs if p)
         if not paragraph_text:
             return
 
