@@ -1,0 +1,7 @@
+Rozmowa telefoniczna Zygfryd i Samuel "Zygfryd: - Witaj Samuelu. Rozmawiałeś z nią?",
+"Samuel: - tak. Dosłownie przed chwilą rozmawiałem, gdy zadzwoniłeś, ale nic od niego nie wydobyła",
+"Zygfryd: - dlaczego? nie wykonała zadania? co z nią?",
+"Samuel: - rozmawiała z nim, ale nie zdołała zdobyć brakujących informacji. Mówił, że wszystko ma w komputerze, ale nie miał przy sobie żadnego sprzętu. Do tego durna baba jako wymówkę wzięła \"naukę JavaScriptu\". Czaisz? dżejesa go będzie uczyć! W centrali mają teraz pewnie niezły ubaw. Poza tym, to... Zygfryd, Ty słyszałeś co się stało?",
+"Zygfryd: - Tak Samuelu. Słyszałem. Wiem o wszystkim. Przede mną się to nie ukryje.",
+"Samuel: - no ja nie mogę... ale to spokojnie przyjmujesz. Po prostu \"słyszałem\"? Gościa już nie ma! Nie żyje! Oni chyba [niezrozumiałe dźwięki] i gość nie żyje! [niezrozumiałe dźwięki] więc musimy [trzaski] więc [trzaski] bo dron [trzaski]",
+"Zygfryd: - hej! jesteś tam? Coś słabo Cię słychać. Słychać tylko trzaski i przerywa mocno. Halooooo?"

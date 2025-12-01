@@ -1,0 +1,7 @@
+SoftoAI współpracowało z polską marką TechnoSfera przy rozwijaniu wirtualnych światów opartych na sztucznej inteligencji, które miały oferować użytkownikom maksymalną immersję, której do tej pory nie oferował nikt inny.
+
+SoftoAI stworzyło algorytmy generatywne, które mogły w czasie rzeczywistym projektować krajobrazy, miasta i postacie reagujące na interakcje gracza. Sztuczna inteligencja analizowała zachowania użytkowników, dostosowując poziom trudności i fabułę do ich preferencji.
+
+Współpraca obejmowała również opracowanie narzędzi do analizy danych zebranych w czasie sesji VR, co pozwalało TechnoSferze lepiej rozumieć potrzeby klientów. SoftoAI zaprojektowało system do zarządzania serwerami w chmurze, który minimalizował opóźnienia w przesyle danych i poprawiał jakość rozgrywki.
+
+Firma opracowała też symulacje oparte na sztucznej inteligencji, które wspierały rozwój edukacyjnych aplikacji VR. W wyniku tej współpracy TechnoSfera wprowadziła na rynek platformę „NeoVerse,” która szybko zdobyła uznanie wśród użytkowników. SoftoAI było również odpowiedzialne za implementację systemów bezpieczeństwa, które chroniły dane użytkowników przed atakami cybernetycznymi. Współpraca trwała 6 lat, a jej efektem była dominacja TechnoSfery na rynku wirtualnej rzeczywistości.

@@ -1,0 +1,7 @@
+Rozmowa telefoniczna Samuel i Tomasz "Samuel: - Cześć Tomasz. Tu Samuel. Dostałem ten numer od szefa. Potrzebuję hasła do pierwszej warstwy zabezpieczeń kompa sam wiesz kogo. Możesz mi pomóc?",
+"Tomasz: - Aaaa hej! hej!. Tak, mogę Ci pomóc. Hasło do pierwszej warstwy to \"NONOMNISMORIAR\".",
+"Samuel: - mmmm... takie filozoficzne to hasło i w sumie pasuje teraz do kontekstu haha! Spoko. Dzięki. A kolejne warstwy?",
+"Tomasz: - Nie wiem. Siedzę nad tymi warstwami już od kilku dni i powiem Ci, że on musiał używać technologii z przyszłości, bo nasze LLM-y są zbyt wolne, aby przejść kolejne warstwy weryfikacji. Bez skoku w czasie i pomocy Zygfryda chyba się nie uda",
+"Samuel: - wiesz dobrze, że skakać w czasie może teraz tylko Azazel, a z nim to nie ma rozmowy. Ale dobra... Zygfryd nakręci numer piąty na złamanie tego.",
+"Tomasz: - to piątka nadal się niczego nie domyśla?",
+"Samuel: - piątka to posłuszna owieczka. Wykonuje polecenia, ale nie wie co robi. Dobra, dzięki za hasło. Przekażę je numerowi piątemu [dźwięk odkładanej słuchawki]"

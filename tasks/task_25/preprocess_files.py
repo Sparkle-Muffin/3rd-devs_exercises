@@ -61,7 +61,7 @@ def clean_and_unify_text(text: str) -> str:
     text = re.sub(r"\?{2,}", "?", text)  # Replace multiple question marks with single
     text = re.sub(r"\n{2,}", "\n\n", text)  # Replace multiple newlines with two newlines
 
-    text = text.lower()  # Lowercase all text
+    # text = text.lower()  # Lowercase all text
 
     text = text.strip()  # Remove leading/trailing whitespace
 

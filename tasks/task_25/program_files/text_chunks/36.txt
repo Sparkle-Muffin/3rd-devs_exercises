@@ -1,0 +1,6 @@
+Rozmowa telefoniczna Zygfryd i Samuel "Zygfryd: - Samuelu! helooo?! Słyszysz mnie teraz? Zadzwoniłem ponownie, bo chyba znowu z zasięgiem jest u Ciebie jakiś problem...",
+"Samuel: - tak Zygfryd, słyszę Cię teraz dobrze. Przepraszam, gdy poprzednio dzwoniłeś, byłem w fabryce. Wiesz, w sektorze D, gdzie się produkuje broń i tutaj mają jakąś izolację na ścianach dodatkową. Telefon gubi zasięg. Masz jakieś nowe zadanie dla mnie?",
+"Zygfryd: - tak. Mam dla Ciebie nowe zadanie. Skontaktuj się z Tomaszem. On pracuje w Centrali. Może pomóc Ci włamać się do komputera tego gościa. Masz już endpoint API?",
+"Samuel: - tak, mam ten endpoint.  - Dzięki. Zadzwonię do Tomasza dopytać o resztę. Coś jeszcze?",
+"Zygfryd: - Nie, to wszysto. No to weź teraz ten endpoint i użyj do połączenia. Tomasz powie Ci jakie jest hasło do pierwszej warstwy zabezpieczeń. OK. Nie marnuj czasu. Dzwoń!",
+"Samuel: - OK. Dzwonię do Tomasza. [dźwięk odkładanej słuchawki]"

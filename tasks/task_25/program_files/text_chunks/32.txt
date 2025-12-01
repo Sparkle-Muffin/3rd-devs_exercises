@@ -1,0 +1,7 @@
+Blog Rafała Rozdział 11 Niezależnie od tego, jak potoczyłyby się losy moje i profesora Maja, to i tak udałoby się nam zmienić świat od punktu, w którym się znajdujemy, w przyszłość. Tego co za nami, nie zmienimy. Nie zmienimy także teraźniejszości. Roboty nadal kontrolują nasze otoczenie i musimy się ich obawiać - tak wyglądają fakty.
+We współpracy z ludźmi z centrali udało mi się namierzyć coś, co możemy nazwać "sercem systemu robotów". Jest to API, którego roboty używają do uaktualniania swoich informacji. Jeśli udałoby nam się zatruć ich źródło wiedzy, prawdopodobnie doprowadzilibyśmy do zapaści systemu sterującego robotami. A to oznaczałoby, że ruch oporu mógłby bez większych przeszkód przejąć wszystkie fabryki i centra danych, które napędzają obecny reżim.
+Jedyne, co musimy zrobić, to przygotować odpowiednie "oprogramowanie zatruwające". Problem polega na tym, że roboty wcale nie są takie głupie. Mają swoje mechanizmy, które potrafią odróżnić dane zatrute od tych poprawnych. Musimy więc tak manipulować tymi danymi, aby przeszły one przez weryfikację. Jest to zadanie niezwykle skomplikowane.
+Ale wierzę, że numer piąty, który przeszedł to samo szkolenie co ja i był poddany elitarnej selekcji w przyspieszonym tempie, będzie w stanie zaprogramować dla nas takie rozwiązanie, które zatruje "serce systemu robotów" - wtedy ludzkość będzie ocalona.
+Jakby coś, to jestem w Szwajcarii 🇨🇭.
+Do zobaczenia "w przyszłości" 👋
+Jeśli dotarłeś do tego miejsca, centrala otrzymała już wszelkie niezbędne dane 📨.

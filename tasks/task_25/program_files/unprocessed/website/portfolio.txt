@@ -1,0 +1,18 @@
+Nasi klienci
+
+Kliknij nazwę klienta, aby dowiedzieć się więcej.
+
+BanAN Technologies Inc.
+    Lider w branży robotów przemysłowych i militarnych
+
+BioMech Solutions
+    Firma specjalizująca się w tworzeniu zaawansowanych biomechanicznych protez oraz ulepszeń ciała. 
+
+Quantum Automata
+    Producent kwantowych systemów sztucznej inteligencji do zastosowań w automatyzacji przemysłu. 
+
+TechnoSfera
+    Korporacja projektująca wirtualne światy i systemy immersyjnej rozrywki dla globalnych odbiorców. 
+
+NeuroTech Robotics
+    Lider w tworzeniu neurointerfejsów do sterowania zaawansowanymi robotami i systemami autonomicznymi. 

@@ -1,7 +1,7 @@
-from common.embeddings import generate_embeddings_and_metadata
-from common.qdrant_api import upload_to_qdrant
-from common.bm25_encoding import generate_bm25_encodings
-from common.constants import QDRANT_COLLECTION_NAME, VECTOR_SIZE, BM25_ENCODINGS_DB_PATH
+from task_25_common.embeddings import generate_embeddings_and_metadata
+from task_25_common.qdrant_api import upload_to_qdrant
+from task_25_common.bm25_encoding import generate_bm25_encodings
+from task_25_common.constants import QDRANT_COLLECTION_NAME, VECTOR_SIZE, BM25_ENCODINGS_DB_PATH
 from pathlib import Path
 
 
